@@ -7,6 +7,7 @@ import {
   SharedLayout,
   MyDrivers,
   Constructors,
+  Drivers,
 } from "./pages/dashboard";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="locations" element={<Locations />} />
           <Route path="constructors" element={<Constructors />} />
+          <Route path="drivers" element={<Drivers />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/landing" element={<Landing />} />

@@ -2,7 +2,7 @@ import { IoBarChartSharp } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdSportsScore } from "react-icons/md";
-import { GiMechanicGarage } from "react-icons/gi";
+import { GiMechanicGarage, GiFullMotorcycleHelmet } from "react-icons/gi";
 
 const links = [
   {
@@ -38,6 +38,13 @@ const links = [
     text: "constructors",
     path: "constructors",
     icon: <GiMechanicGarage />,
+    role: "admin",
+  },
+  {
+    id: 6,
+    text: "drivers",
+    path: "drivers",
+    icon: <GiFullMotorcycleHelmet />,
     role: "admin",
   },
 ];

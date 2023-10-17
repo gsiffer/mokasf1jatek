@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import EditIcon from "../../components/icons/EditIcon";
 import DeleteIcon from "../../components/icons/DeleteIcon";
 import Select from "react-select";
-import { CREATE_LOCATION_BEGIN } from "../../context/actions";
+import Alert from "../../components/Alert";
 
 const Constructors = () => {
   const HEADER = "Constructors";
@@ -22,9 +22,6 @@ const Constructors = () => {
     getConstructors,
     handleChange,
     sortConstructors,
-    totalLocations,
-    numOfLocationsPages,
-    pageLocation,
     slidingPanel,
     slidePanel,
     deleteConstructor,
@@ -58,7 +55,7 @@ const Constructors = () => {
       <div className="table-container">
         <h2 className="table-heading">{HEADER}</h2>
 
-        {/* {showAlert && !isDisplayErrorOnForm && <Alert />} */}
+        {showAlert && !isDisplayErrorOnForm && <Alert />}
 
         <div className="space-between">
           <div>
@@ -117,13 +114,6 @@ const Constructors = () => {
           </tbody>
         </table>
       </div>
-      {/* {numOfLocationsPages > 1 && (
-        <PageBtnContainer
-          numOfPages={numOfLocationsPages}
-          page={pageLocation}
-          type="locations"
-        />
-      )} */}
     </Wrapper>
   );
 };

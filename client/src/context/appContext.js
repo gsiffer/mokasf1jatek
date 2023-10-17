@@ -36,6 +36,9 @@ import {
   GET_CONSTRUCTORS_BEGIN,
   GET_CONSTRUCTORS_SUCCESS,
   HANDLE_CHANGE,
+  CREATE_CONSTRUCTOR_BEGIN,
+  CREATE_CONSTRUCTOR_SUCCESS,
+  CREATE_CONSTRUCTOR_ERROR,
 } from "./actions";
 
 // const token = localStorage.getItem("token");
@@ -375,6 +378,28 @@ const AppProvider = ({ children }) => {
     });
   };
 
+  const createConstructor = async (data) => {
+    dispatch({ type: CREATE_CONSTRUCTOR_BEGIN });
+    try {
+      const constructorName = data.trim();
+
+      await authFetch.post("/constructors", {
+        constructorName,
+      });
+      getConstructors();
+      dispatch({
+        type: CREATE_CONSTRUCTOR_SUCCESS,
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: CREATE_CONSTRUCTOR_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   // const setLocationCalendar = (isLocationCalendarOpen) => {
   //   dispatch({
   //     type: SET_LOCATION_CALENDAR,
@@ -401,6 +426,7 @@ const AppProvider = ({ children }) => {
         getMyDrivers,
         getConstructors,
         handleChange,
+        createConstructor,
       }}
     >
       {children}

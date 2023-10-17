@@ -5,6 +5,10 @@ dotenv.config();
 import "express-async-errors";
 import morgan from "morgan";
 
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
+
 // Security Packages
 import helmet from "helmet";
 import xss from "xss-clean";
@@ -30,6 +34,9 @@ if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.use(express.static(path.resolve(__dirname, "./client/build")));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -40,9 +47,9 @@ app.use(xss());
 // Sanitizes user-supplied data to prevent MongoDB Operator Injection.
 app.use(mongoSanitize());
 
-app.get("/", (req, res) => {
-  res.send("Welcome");
-});
+// app.get("/", (req, res) => {
+//   res.send("Welcome");
+// });
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/mydrivers", authenticateUser, myDriversRouter);
@@ -54,6 +61,10 @@ app.use(
   authUserRole,
   constructorsRouter
 );
+
+app.get("*", function (request, response) {
+  response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+});
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

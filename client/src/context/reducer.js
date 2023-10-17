@@ -31,6 +31,9 @@ import {
   GET_CONSTRUCTORS_BEGIN,
   GET_CONSTRUCTORS_SUCCESS,
   HANDLE_CHANGE,
+  CREATE_CONSTRUCTOR_BEGIN,
+  CREATE_CONSTRUCTOR_SUCCESS,
+  CREATE_CONSTRUCTOR_ERROR,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -121,7 +124,7 @@ const reducer = (state, action) => {
       isLoading: false,
       user: action.payload.user,
       userLocation: action.payload.location,
-      jobLocation: action.payload.location,
+      // jobLocation: action.payload.location,
       showAlert: true,
       alertType: "success",
       alertText: action.payload.alertText,
@@ -164,7 +167,7 @@ const reducer = (state, action) => {
       isLoading: false,
       user: action.payload.user,
       userLocation: action.payload.location,
-      jobLocation: action.payload.location,
+      // jobLocation: action.payload.location,
       showAlert: true,
       alertType: "success",
       alertText: "User Profile Updated",
@@ -214,7 +217,7 @@ const reducer = (state, action) => {
       userLoading: false,
       user: action.payload.user,
       userLocation: action.payload.location,
-      jobLocation: action.payload.location,
+      // jobLocation: action.payload.location,
     };
   }
 
@@ -339,6 +342,30 @@ const reducer = (state, action) => {
       ...state,
       page: 1,
       [action.payload.name]: action.payload.value,
+    };
+  }
+
+  if (action.type === CREATE_CONSTRUCTOR_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === CREATE_CONSTRUCTOR_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "New Constructor Created!",
+      isDisplayErrorOnForm: true,
+    };
+  }
+  if (action.type === CREATE_CONSTRUCTOR_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: true,
     };
   }
 

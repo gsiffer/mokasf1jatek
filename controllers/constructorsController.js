@@ -8,6 +8,14 @@ const createConstructor = async (req, res) => {
     throw new BadRequestError("Please provide all values");
   }
 
+  const constructorNameLower = await Constructor.findOne({
+    constructorNameLower: constructorName.toLowerCase(),
+  });
+
+  if (constructorNameLower) {
+    throw new BadRequestError("Constructor name has to be unique");
+  }
+
   req.body.createdBy = req.user.userId;
   const constructor = await Constructor.create(req.body);
 

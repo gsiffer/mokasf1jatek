@@ -9,14 +9,6 @@ const createLocation = async (req, res) => {
     throw new BadRequestError("Please provide all values");
   }
 
-  const locationNameLower = await Location.findOne({
-    locationNameLower: locationName.toLowerCase(),
-  });
-
-  if (locationNameLower) {
-    throw new BadRequestError("Location name has to be unique");
-  }
-
   if (isLocationActive) {
     await setIsLocationActiveToFalse(Location);
   }

@@ -6,6 +6,7 @@ import PageBtnContainer from "../../components/PageBtnContainer";
 import EditIcon from "../../components/icons/EditIcon";
 import DeleteIcon from "../../components/icons/DeleteIcon";
 import formatDateTimeToCET from "../../utils/formatDateTimeToCET";
+import capitalizeFirstLetters from "../../utils/capitalizeFirstLetters";
 import Alert from "../../components/Alert";
 
 const Locations = () => {
@@ -79,7 +80,9 @@ const Locations = () => {
           <tbody>
             {locations.map((location) => (
               <tr key={location._id}>
-                <td data-heading={COLUMNS[0]}>{location.locationName}</td>
+                <td data-heading={COLUMNS[0]}>
+                  {capitalizeFirstLetters(location.locationName)}
+                </td>
                 <td data-heading={COLUMNS[1]}>
                   {formatDateTimeToCET(location.locationCloseDate)}
                 </td>

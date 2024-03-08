@@ -6,6 +6,7 @@ import EditIcon from "../../components/icons/EditIcon";
 import DeleteIcon from "../../components/icons/DeleteIcon";
 import Select from "react-select";
 import Alert from "../../components/Alert";
+import capitalizeFirstLetters from "../../utils/capitalizeFirstLetters";
 
 const Constructors = () => {
   const HEADER = "Constructors";
@@ -42,6 +43,7 @@ const Constructors = () => {
   };
 
   const handleOptionChange = (selectedOption, action) => {
+    console.log(action, selectedOption);
     setSelectedOption(selectedOption);
     handleChange({ name: action.name, value: selectedOption.value });
   };
@@ -91,7 +93,9 @@ const Constructors = () => {
           <tbody>
             {constructors.map((constructor) => (
               <tr key={constructor._id}>
-                <td data-heading={COLUMNS[0]}>{constructor.constructorName}</td>
+                <td data-heading={COLUMNS[0]}>
+                  {capitalizeFirstLetters(constructor.constructorName)}
+                </td>
 
                 <td className="content-none">
                   <div className="options-container">
@@ -103,7 +107,7 @@ const Constructors = () => {
                     </button>
                     <button
                       type="button"
-                      // onClick={() => deleteConstructor(constructor._id)}
+                      onClick={() => deleteConstructor(constructor._id)}
                     >
                       <DeleteIcon title="Delete constructor" />
                     </button>

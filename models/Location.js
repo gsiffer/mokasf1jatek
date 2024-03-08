@@ -22,9 +22,6 @@ const LocationSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Please provide user"],
     },
-    locationNameLower: {
-      type: String,
-    },
   },
   { timestamps: true }
 );
@@ -34,7 +31,7 @@ LocationSchema.plugin(uniqueValidator);
 
 // Pre-save middleware to update constructorNameLower
 LocationSchema.pre("save", function () {
-  this.locationNameLower = this.locationName.toLowerCase();
+  this.locationName = this.locationName.toLowerCase();
 });
 
 export default mongoose.model("Location", LocationSchema);

@@ -39,6 +39,11 @@ import {
   CREATE_CONSTRUCTOR_BEGIN,
   CREATE_CONSTRUCTOR_SUCCESS,
   CREATE_CONSTRUCTOR_ERROR,
+  DELETE_CONSTRUCTOR_BEGIN,
+  DELETE_CONSTRUCTOR_ERROR,
+  EDIT_CONSTRUCTOR_BEGIN,
+  EDIT_CONSTRUCTOR_SUCCESS,
+  EDIT_CONSTRUCTOR_ERROR,
 } from "./actions";
 
 // const token = localStorage.getItem("token");
@@ -104,7 +109,7 @@ const AppProvider = ({ children }) => {
       return response;
     },
     (error) => {
-      console.log(error.response);
+      // console.log(error.response);
       if (error.response.status === 401) {
         logoutUser();
       }
@@ -241,7 +246,6 @@ const AppProvider = ({ children }) => {
         },
       });
     } catch (error) {
-      // console.log(error.response);
       logoutUser();
     }
     clearAlert();
@@ -400,6 +404,41 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const deleteConstructor = async (constructorId) => {
+    dispatch({ type: DELETE_CONSTRUCTOR_BEGIN });
+    try {
+      await authFetch.delete(`/constructors/${constructorId}`);
+      getConstructors();
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: DELETE_CONSTRUCTOR_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const editConstructor = async (constructorName) => {
+    dispatch({ type: EDIT_CONSTRUCTOR_BEGIN });
+    try {
+      await authFetch.patch(`/constructors/${state.slidingPanel.editID}`, {
+        constructorName,
+      });
+      getConstructors();
+      dispatch({
+        type: EDIT_CONSTRUCTOR_SUCCESS,
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_CONSTRUCTOR_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   // const setLocationCalendar = (isLocationCalendarOpen) => {
   //   dispatch({
   //     type: SET_LOCATION_CALENDAR,
@@ -427,6 +466,8 @@ const AppProvider = ({ children }) => {
         getConstructors,
         handleChange,
         createConstructor,
+        deleteConstructor,
+        editConstructor,
       }}
     >
       {children}

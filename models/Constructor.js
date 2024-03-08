@@ -14,9 +14,6 @@ const ConstructorSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Please provide user"],
     },
-    constructorNameLower: {
-      type: String,
-    },
   },
   { timestamps: true }
 );
@@ -26,7 +23,7 @@ ConstructorSchema.plugin(uniqueValidator);
 
 // Pre-save middleware to update constructorNameLower
 ConstructorSchema.pre("save", function () {
-  this.constructorNameLower = this.constructorName.toLowerCase();
+  this.constructorName = this.constructorName.toLowerCase();
 });
 
 export default mongoose.model("Constructor", ConstructorSchema);

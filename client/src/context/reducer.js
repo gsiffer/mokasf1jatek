@@ -34,6 +34,11 @@ import {
   CREATE_CONSTRUCTOR_BEGIN,
   CREATE_CONSTRUCTOR_SUCCESS,
   CREATE_CONSTRUCTOR_ERROR,
+  DELETE_CONSTRUCTOR_BEGIN,
+  DELETE_CONSTRUCTOR_ERROR,
+  EDIT_CONSTRUCTOR_BEGIN,
+  EDIT_CONSTRUCTOR_SUCCESS,
+  EDIT_CONSTRUCTOR_ERROR,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -340,7 +345,7 @@ const reducer = (state, action) => {
   if (action.type === HANDLE_CHANGE) {
     return {
       ...state,
-      page: 1,
+      //page: 1,
       [action.payload.name]: action.payload.value,
     };
   }
@@ -359,6 +364,45 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === CREATE_CONSTRUCTOR_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: true,
+    };
+  }
+
+  if (action.type === DELETE_CONSTRUCTOR_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === DELETE_CONSTRUCTOR_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: false,
+    };
+  }
+
+  if (action.type === EDIT_CONSTRUCTOR_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === EDIT_CONSTRUCTOR_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Constructor Updated!",
+      isDisplayErrorOnForm: true,
+    };
+  }
+  if (action.type === EDIT_CONSTRUCTOR_ERROR) {
     return {
       ...state,
       isLoading: false,

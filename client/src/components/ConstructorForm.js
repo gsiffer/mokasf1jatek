@@ -17,10 +17,21 @@ const ConstructorForm = () => {
     createConstructor,
     showAlert,
     isDisplayErrorOnForm,
+    editConstructor,
   } = useAppContext();
 
   useEffect(() => {
     nameInputRef.current.focus();
+
+    if (slidingPanel.editID !== 0) {
+      const editedConstructor = constructors.find(
+        (constructor) => constructor._id === slidingPanel.editID
+      );
+
+      if (editedConstructor) {
+        setConstructorName(editedConstructor.constructorName);
+      }
+    }
   }, []);
 
   const handleClickClose = (e) => {
@@ -43,7 +54,7 @@ const ConstructorForm = () => {
         setConstructorName("");
         setIsSaveClicked(false);
       } else {
-        // editLocation(formData);
+        editConstructor(constructorName);
       }
     }
   };

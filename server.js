@@ -23,6 +23,7 @@ import authRouter from "./routes/authRoutes.js";
 import myDriversRouter from "./routes/myDriversRoutes.js";
 import locationsRouter from "./routes/locationsRoutes.js";
 import constructorsRouter from "./routes/constructorsRoutes.js";
+import driversRouter from "./routes/driversRoutes.js";
 
 // middleware
 import notFoundMiddleware from "./middleware/not-found.js";
@@ -61,6 +62,7 @@ app.use(
   authUserRole,
   constructorsRouter
 );
+app.use("/api/v1/drivers", authenticateUser, authUserRole, driversRouter);
 
 app.get("*", function (request, response) {
   response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));

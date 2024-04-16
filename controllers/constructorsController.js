@@ -48,9 +48,20 @@ const updateConstructor = async (req, res) => {
     throw new NotFoundError(`No constructor with id ${constructorId}`);
   }
 
+  const lowercaseBody = {};
+
+  for (let key in req.body) {
+    if (Object.hasOwnProperty.call(req.body, key)) {
+      lowercaseBody[key] =
+        typeof req.body[key] === "string"
+          ? req.body[key].toLowerCase()
+          : req.body[key];
+    }
+  }
+
   const updatedConstructor = await Constructor.findOneAndUpdate(
     { _id: constructorId },
-    req.body,
+    lowercaseBody,
     {
       new: true,
       runValidators: true,

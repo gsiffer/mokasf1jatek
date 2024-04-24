@@ -2,6 +2,11 @@ import { useAppContext } from "../../context/appContext";
 import { useEffect } from "react";
 import Wrapper from "../../assets/wrappers/Table";
 import Loading from "../../components/Loading";
+import PageBtnContainer from "../../components/PageBtnContainer";
+import EditIcon from "../../components/icons/EditIcon";
+import DeleteIcon from "../../components/icons/DeleteIcon";
+import capitalizeFirstLetters from "../../utils/capitalizeFirstLetters";
+import Alert from "../../components/Alert";
 
 const Drivers = () => {
   const HEADER = "Drivers";
@@ -19,11 +24,13 @@ const Drivers = () => {
     deleteDriver,
     showAlert,
     isDisplayErrorOnForm,
+    getConstructors,
   } = useAppContext();
 
-  // useEffect(() => {
-  //   getDrivers();
-  // }, [pageDriver]);
+  useEffect(() => {
+    getDrivers();
+    getConstructors(); // Get all constructor for the driver form to fill the constructor drop down
+  }, [pageDriver]);
 
   const editDriverClick = (id) => {
     slidePanel(!slidingPanel.isPanelSlide, "driver", false, id);
@@ -38,16 +45,16 @@ const Drivers = () => {
       <div className="table-container">
         <h2 className="table-heading">{HEADER}</h2>
 
-        {/* {showAlert && !isDisplayErrorOnForm && <Alert />}
+        {showAlert && !isDisplayErrorOnForm && <Alert />}
 
         <div className="table-menu">
           <div className="page-count-header">
             <h5>
-              {totalLocations} location{locations.length > 1 && "s"} found
+              {totalDrivers} driver{drivers.length > 1 && "s"} found
             </h5>
 
             <h5 className="page-count">
-              page {pageLocation} of {numOfLocationsPages}
+              page {pageDriver} of {numOfDriversPages}
             </h5>
           </div>
 
@@ -55,10 +62,10 @@ const Drivers = () => {
             type="button"
             className="btn btn-height"
             onClick={() =>
-              slidePanel(!slidingPanel.isPanelSlide, "location", true)
+              slidePanel(!slidingPanel.isPanelSlide, "driver", true)
             }
           >
-            New Location
+            New Driver
           </button>
         </div>
 
@@ -72,45 +79,45 @@ const Drivers = () => {
           </thead>
 
           <tbody>
-            {locations.map((location) => (
-              <tr key={location._id}>
+            {drivers.map((driver) => (
+              <tr key={driver._id}>
                 <td data-heading={COLUMNS[0]}>
-                  {capitalizeFirstLetters(location.locationName)}
+                  {capitalizeFirstLetters(driver.firstName)}
                 </td>
                 <td data-heading={COLUMNS[1]}>
-                  {formatDateTimeToCET(location.locationCloseDate)}
+                  {capitalizeFirstLetters(driver.lastName)}
                 </td>
                 <td data-heading={COLUMNS[2]}>
-                  {location.isLocationActive ? "Yes" : "No"}
+                  {capitalizeFirstLetters(driver.teamName.constructorName)}
                 </td>
                 <td className="content-none">
                   <div className="options-container">
                     <button
                       type="button"
-                      onClick={() => editLocationClick(location._id)}
+                      onClick={() => editDriverClick(driver._id)}
                     >
-                      <EditIcon title="Edit location" />
+                      <EditIcon title="Edit driver" />
                     </button>
                     <button
                       type="button"
-                      onClick={() => deleteLocation(location._id)}
+                      onClick={() => deleteDriver(driver._id)}
                     >
-                      <DeleteIcon title="Delete location" />
+                      <DeleteIcon title="Delete driver" />
                     </button>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table> */}
+        </table>
       </div>
-      {/* {numOfLocationsPages > 1 && (
+      {numOfDriversPages > 1 && (
         <PageBtnContainer
-          numOfPages={numOfLocationsPages}
-          page={pageLocation}
-          type="locations"
+          numOfPages={numOfDriversPages}
+          page={pageDriver}
+          type="drivers"
         />
-      )} */}
+      )}
     </Wrapper>
   );
 };

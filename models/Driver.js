@@ -13,9 +13,9 @@ const DriverSchema = new mongoose.Schema(
       maxlength: 30,
     },
     teamName: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Constructor",
       required: [true, "Please provide team name"],
-      maxlength: 30,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
@@ -36,7 +36,7 @@ DriverSchema.index(
 DriverSchema.pre("save", function () {
   this.firstName = this.firstName.toLowerCase();
   this.lastName = this.lastName.toLowerCase();
-  this.teamName = this.teamName.toLowerCase();
+  // this.teamName = this.teamName.toLowerCase();
 });
 
 export default mongoose.model("Driver", DriverSchema);

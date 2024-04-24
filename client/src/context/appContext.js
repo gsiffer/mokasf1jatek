@@ -44,6 +44,16 @@ import {
   EDIT_CONSTRUCTOR_BEGIN,
   EDIT_CONSTRUCTOR_SUCCESS,
   EDIT_CONSTRUCTOR_ERROR,
+  GET_DRIVERS_BEGIN,
+  GET_DRIVERS_SUCCESS,
+  CREATE_DRIVER_BEGIN,
+  CREATE_DRIVER_SUCCESS,
+  CREATE_DRIVER_ERROR,
+  EDIT_DRIVER_BEGIN,
+  EDIT_DRIVER_SUCCESS,
+  EDIT_DRIVER_ERROR,
+  DELETE_DRIVER_BEGIN,
+  DELETE_DRIVER_ERROR,
 } from "./actions";
 
 // const token = localStorage.getItem("token");
@@ -77,6 +87,11 @@ const initialState = {
   // isLocationCalendarOpen: false,
   constructors: [],
   sortConstructors: "a-z",
+  // Drivers
+  drivers: [],
+  totalDrivers: 0,
+  numOfDriversPages: 1,
+  pageDriver: 1,
 };
 
 const AppContext = createContext();
@@ -252,9 +267,9 @@ const AppProvider = ({ children }) => {
   };
 
   const changePage = (page, name) => {
-    if (name === "locations") {
-      dispatch({ type: CHANGE_PAGE, payload: { page, name } });
-    }
+    // if (name === "locations") {
+    dispatch({ type: CHANGE_PAGE, payload: { page, name } });
+    // }
   };
 
   const slidePanel = (
@@ -439,6 +454,101 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const getDrivers = async () => {
+    const { pageDriver } = state;
+    let url = `/drivers?page=${pageDriver}`;
+
+    dispatch({ type: GET_DRIVERS_BEGIN });
+    try {
+      const { data } = await authFetch.get(url); // or authFetch(url) -> get is the default;
+      const { drivers, totalDrivers, numOfDriversPages } = data;
+
+      if (drivers.length === 0 && pageDriver > 1) {
+        changePage(pageDriver - 1, "drivers");
+      }
+
+      dispatch({
+        type: GET_DRIVERS_SUCCESS,
+        payload: {
+          drivers,
+          totalDrivers,
+          numOfDriversPages,
+        },
+      });
+    } catch (error) {
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  const createDriver = async (data) => {
+    dispatch({ type: CREATE_DRIVER_BEGIN });
+    try {
+      const firstName = data.firstName.trim();
+      const lastName = data.lastName.trim();
+      const teamName = data.teamName.trim();
+
+      await authFetch.post("/drivers", {
+        firstName,
+        lastName,
+        teamName,
+      });
+      getDrivers();
+      dispatch({
+        type: CREATE_DRIVER_SUCCESS,
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: CREATE_DRIVER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const editDriver = async (data) => {
+    dispatch({ type: EDIT_DRIVER_BEGIN });
+    try {
+      const firstName = data.firstName.trim();
+      const lastName = data.lastName.trim();
+      const teamName = data.teamName.trim();
+
+      await authFetch.patch(`/drivers/${state.slidingPanel.editID}`, {
+        firstName,
+        lastName,
+        teamName,
+      });
+      getDrivers();
+      dispatch({
+        type: EDIT_DRIVER_SUCCESS,
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_DRIVER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const deleteDriver = async (driverId) => {
+    dispatch({ type: DELETE_DRIVER_BEGIN });
+    try {
+      await authFetch.delete(`/drivers/${driverId}`);
+      getDrivers();
+    } catch (error) {
+      // console.log(error.response);
+      if (error.response.status === 401) return;
+      dispatch({
+        type: DELETE_DRIVER_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   // const setLocationCalendar = (isLocationCalendarOpen) => {
   //   dispatch({
   //     type: SET_LOCATION_CALENDAR,
@@ -468,6 +578,10 @@ const AppProvider = ({ children }) => {
         createConstructor,
         deleteConstructor,
         editConstructor,
+        getDrivers,
+        createDriver,
+        editDriver,
+        deleteDriver,
       }}
     >
       {children}

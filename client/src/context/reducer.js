@@ -39,6 +39,16 @@ import {
   EDIT_CONSTRUCTOR_BEGIN,
   EDIT_CONSTRUCTOR_SUCCESS,
   EDIT_CONSTRUCTOR_ERROR,
+  GET_DRIVERS_BEGIN,
+  GET_DRIVERS_SUCCESS,
+  CREATE_DRIVER_BEGIN,
+  CREATE_DRIVER_SUCCESS,
+  CREATE_DRIVER_ERROR,
+  EDIT_DRIVER_BEGIN,
+  EDIT_DRIVER_SUCCESS,
+  EDIT_DRIVER_ERROR,
+  DELETE_DRIVER_BEGIN,
+  DELETE_DRIVER_ERROR,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -242,6 +252,8 @@ const reducer = (state, action) => {
   if (action.type === CHANGE_PAGE) {
     if (action.payload.name === "locations") {
       return { ...state, pageLocation: action.payload.page };
+    } else if (action.payload.name === "drivers") {
+      return { ...state, pageDriver: action.payload.page };
     }
   }
 
@@ -410,6 +422,82 @@ const reducer = (state, action) => {
       alertType: "danger",
       alertText: action.payload.msg,
       isDisplayErrorOnForm: true,
+    };
+  }
+
+  if (action.type === GET_DRIVERS_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_DRIVERS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      drivers: action.payload.drivers,
+      totalDrivers: action.payload.totalDrivers,
+      numOfDriversPages: action.payload.numOfDriversPages,
+    };
+  }
+
+  if (action.type === CREATE_DRIVER_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === CREATE_DRIVER_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "New Drivrer Created!",
+      isDisplayErrorOnForm: true,
+    };
+  }
+  if (action.type === CREATE_DRIVER_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: true,
+    };
+  }
+
+  if (action.type === EDIT_DRIVER_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === EDIT_DRIVER_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Driver Updated!",
+      isDisplayErrorOnForm: true,
+    };
+  }
+  if (action.type === EDIT_DRIVER_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: true,
+    };
+  }
+
+  if (action.type === DELETE_DRIVER_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === DELETE_DRIVER_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: false,
     };
   }
 

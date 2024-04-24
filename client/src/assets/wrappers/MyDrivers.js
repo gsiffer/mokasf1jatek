@@ -32,9 +32,32 @@ const Wrapper = styled.section`
     border-collapse: collapse;
   }
 
+  .table-container tbody {
+    width: 75%;
+    /* border-style: solid;
+    border-width: 1px; */
+  }
+
+  .table-container thead {
+    width: 25%;
+    /* border-style: solid;
+    border-width: 1px; */
+  }
+
+  .table-container table.vertical-table {
+    /* width: 100%; */
+    max-width: 700px;
+    display: flex;
+  }
+
   .table-container table thead tr {
     background: #222;
     color: #fff;
+  }
+
+  .table-container table tr.vertical-columns {
+    display: flex;
+    flex-direction: column;
   }
 
   .table-container table th {
@@ -43,11 +66,15 @@ const Wrapper = styled.section`
   }
 
   .table-container table td {
-    text-align: center;
+    text-align: left;
     padding: 10px 32px;
   }
 
-  table tr:nth-child(even) {
+  .table-container table td.line {
+    padding: 16px 32px;
+  }
+
+  table tbody td:nth-child(odd) {
     background-color: #f5f5f5;
   }
 
@@ -57,6 +84,8 @@ const Wrapper = styled.section`
 
   .table-menu {
     display: flex;
+    justify-content: end;
+    max-width: 700px;
     padding: 10px 0 10px 0;
   }
 
@@ -88,15 +117,13 @@ const Wrapper = styled.section`
     text-align: center;
   }
 
-  /* .content-none {
-    text-align: center;
-  } */
-
   .options-container {
     display: flex;
     justify-content: space-around;
-    width: 100px;
-    margin: auto;
+  }
+
+  .remaining-time {
+    display: flex;
   }
 
   @media (max-width: 580px) {
@@ -117,21 +144,25 @@ const Wrapper = styled.section`
       content: none;
     }
 
+    .table-container tbody {
+      width: 100%;
+    }
+
     .options-container {
       display: flex;
       justify-content: end;
       gap: 10px;
-      margin: 0px;
-      width: initial;
     }
 
     .table-container table td,
+    .table-container table td.line,
     .table-container table th {
       text-align: left;
       padding: 10px;
     }
 
-    .table-container table tr {
+    .table-container table tr,
+    .table-container table tr.vertical-columns {
       display: block;
       margin-bottom: 10px;
       background: #fff;
@@ -139,9 +170,12 @@ const Wrapper = styled.section`
       border-radius: var(--borderRadius);
     }
 
-    .table-container table {
+    .table-container table,
+    .table-container table.vertical-table {
       box-shadow: none;
       background: none;
+      width: 100%;
+      padding: 0px;
     }
 
     .page-count-header {
@@ -151,6 +185,15 @@ const Wrapper = styled.section`
     .page-count {
       text-align: left;
       font-weight: bold;
+    }
+
+    table tbody td.line {
+      background-color: #fff;
+    }
+
+    .remaining-time {
+      flex-direction: column;
+      text-align: center;
     }
   }
 `;

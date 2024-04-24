@@ -1,4 +1,4 @@
-import Wrapper from "../assets/wrappers/LocationForm";
+import Wrapper from "../assets/wrappers/Form";
 import CloseIcon from "./icons/CloseIcon";
 import { useAppContext } from "../context/appContext";
 import { useEffect, useState, useRef } from "react";

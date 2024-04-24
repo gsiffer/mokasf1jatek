@@ -1,13 +1,33 @@
+import Wrapper from "../../assets/wrappers/MyDrivers";
 import { useEffect, useState, useRef } from "react";
 import { useAppContext } from "../../context/appContext";
 import moment from "moment";
 import "moment-timezone";
 import Loading from "../../components/Loading";
+import Alert from "../../components/Alert";
+import EditIcon from "../../components/icons/EditIcon";
+import DeleteIcon from "../../components/icons/DeleteIcon";
 
 const CET_TIME_ZONE = "Europe/Paris";
 
 const MyDrivers = () => {
-  const { locationCloseDate, getMyDrivers, isLoading } = useAppContext();
+  const HEADER = "Drivers";
+  const COLUMNS = [
+    "Driver 1",
+    "Driver 2",
+    "Driver 3",
+    "Driver 4",
+    "Driver 5",
+    "Team",
+  ];
+
+  const {
+    locationCloseDate,
+    getMyDrivers,
+    isLoading,
+    showAlert,
+    isDisplayErrorOnForm,
+  } = useAppContext();
 
   const [remainingTime, setRemainingTime] = useState({
     days: null,
@@ -21,9 +41,8 @@ const MyDrivers = () => {
 
   useEffect(() => {
     getMyDrivers();
-
     return () => {
-      console.log("LEAVE");
+      // console.log("LEAVE");
       clearInterval(timerId);
     };
   }, []);
@@ -36,7 +55,7 @@ const MyDrivers = () => {
     }
 
     return () => {
-      console.log("LEAVE");
+      // console.log("LEAVE");
       clearInterval(timerId);
     };
   }, [locationCloseDate]);
@@ -47,10 +66,17 @@ const MyDrivers = () => {
     const timeDifference = moment(targetDate).diff(moment(timeNow));
 
     if (timeDifference < 0) {
+      // console.log("LEAVE");
       clearInterval(timerId);
+      setRemainingTime({
+        ...remainingTime,
+        days: null,
+        hours: null,
+        minutes: null,
+        seconds: null,
+      });
       return;
     }
-
     setRemainingTime({
       ...remainingTime,
       days: Math.floor(timeDifference / (1000 * 60 * 60 * 24)),
@@ -84,15 +110,96 @@ const MyDrivers = () => {
     return <Loading center />;
   }
 
-  if (remainingTime.days != null && !isNaN(remainingTime.days)) {
-    return (
-      <div>
-        <h2>{`Remaining Time: ${remainingTime.days}d ${remainingTime.hours}h ${remainingTime.minutes}m ${remainingTime.seconds}s`}</h2>
+  // if (remainingTime.days != null && !isNaN(remainingTime.days)) {
+  //   return (
+  //     <div>
+  //       <h2>{`Remaining Time: ${remainingTime.days}d ${remainingTime.hours}h ${remainingTime.minutes}m ${remainingTime.seconds}s`}</h2>
+  //     </div>
+  //   );
+  // } else {
+  //   return <h2>No More Bet</h2>;
+  // }
+
+  return (
+    <Wrapper>
+      <div className="table-container">
+        <h2 className="table-heading">{HEADER}</h2>
+
+        {showAlert && !isDisplayErrorOnForm && <Alert />}
+
+        {remainingTime.days != null && !isNaN(remainingTime.days) ? (
+          <div className="remaining-time">
+            <h2>Remaining Time:&nbsp;</h2>
+            <h2>{`${remainingTime.days}d ${remainingTime.hours}h ${remainingTime.minutes}m ${remainingTime.seconds}s`}</h2>
+          </div>
+        ) : (
+          <h2>No More Bet</h2>
+        )}
+
+        <div className="table-menu">
+          {/* <div className="page-count-header">
+            <h5>
+              {totalDrivers} driver{drivers.length > 1 && "s"} found
+            </h5>
+
+            <h5 className="page-count">
+              page {pageDriver} of {numOfDriversPages}
+            </h5>
+          </div> */}
+
+          <button
+            type="button"
+            className="btn btn-height"
+            // onClick={() =>
+            //   slidePanel(!slidingPanel.isPanelSlide, "driver", true)
+            // }
+          >
+            New Bet
+          </button>
+        </div>
+
+        <table className="vertical-table">
+          <thead>
+            <tr className="vertical-columns">
+              {COLUMNS.map((column, index) => (
+                <th key={index}>{column}</th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr className="vertical-columns">
+              <td className="line" data-heading={COLUMNS[0]}>
+                Alexander Albon / Alpine F1 Team
+              </td>
+              <td className="line" data-heading={COLUMNS[1]}>
+                Alexander Albon / Alpine F1 Team
+              </td>
+              <td className="line" data-heading={COLUMNS[2]}>
+                Alexander Albon / Alpine F1 Team
+              </td>
+              <td className="line" data-heading={COLUMNS[3]}>
+                Alexander Albon / Alpine F1 Team
+              </td>
+              <td className="line" data-heading={COLUMNS[4]}>
+                Alexander Albon / Alpine F1 Team
+              </td>
+              <td className="line" data-heading={COLUMNS[5]}>
+                Alpine F1 Team
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    );
-  } else {
-    return <h2>No More Bet</h2>;
-  }
+      {/* {numOfDriversPages > 1 && (
+        <PageBtnContainer
+          numOfPages={numOfDriversPages}
+          page={pageDriver}
+          type="drivers"
+        />
+      )} */}
+    </Wrapper>
+  );
 };
 
 export default MyDrivers;

@@ -48,6 +48,31 @@ const Constructors = () => {
     handleChange({ name: action.name, value: selectedOption.value });
   };
 
+  // Select component style
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+    }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height: "30px",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+    }),
+    input: (provided) => ({
+      ...provided,
+      minHeight: "25px",
+    }),
+    indicatorsContainer: (provided) => ({
+      ...provided,
+    }),
+    menu: (provided) => ({
+      ...provided,
+      lineHeight: "1", // Set the desired line height here
+    }),
+  };
+
   if (isLoading) {
     return <Loading center />;
   }
@@ -61,9 +86,9 @@ const Constructors = () => {
 
         <div className="space-between">
           <div>
-            <label>Sort</label>
             <Select
               name="sortConstructors"
+              styles={customStyles}
               options={SORT_DATA}
               value={selectedOption}
               onChange={handleOptionChange}

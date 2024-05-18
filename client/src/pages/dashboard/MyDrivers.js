@@ -7,6 +7,7 @@ import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
 import EditIcon from "../../components/icons/EditIcon";
 import DeleteIcon from "../../components/icons/DeleteIcon";
+import capitalizeFirstLetters from "../../utils/capitalizeFirstLetters";
 
 const CET_TIME_ZONE = "Europe/Paris";
 
@@ -27,6 +28,10 @@ const MyDrivers = () => {
     isLoading,
     showAlert,
     isDisplayErrorOnForm,
+    myDrivers,
+    location,
+    slidingPanel,
+    slidePanel,
   } = useAppContext();
 
   const [remainingTime, setRemainingTime] = useState({
@@ -136,6 +141,8 @@ const MyDrivers = () => {
           <h2>No More Bet</h2>
         )}
 
+        <h4>{location ? location.locationName : "No Race"}</h4>
+
         <div className="table-menu">
           {/* <div className="page-count-header">
             <h5>
@@ -147,15 +154,17 @@ const MyDrivers = () => {
             </h5>
           </div> */}
 
+          {/* {remainingTime.days != null && ( */}
           <button
             type="button"
             className="btn btn-height"
-            // onClick={() =>
-            //   slidePanel(!slidingPanel.isPanelSlide, "driver", true)
-            // }
+            onClick={() =>
+              slidePanel(!slidingPanel.isPanelSlide, "my_drivers", true)
+            }
           >
             New Bet
           </button>
+          {/* )} */}
         </div>
 
         <table className="vertical-table">
@@ -170,22 +179,22 @@ const MyDrivers = () => {
           <tbody>
             <tr className="vertical-columns">
               <td className="line" data-heading={COLUMNS[0]}>
-                Alexander Albon / Alpine F1 Team
+                {myDrivers ? capitalizeFirstLetters(myDrivers.driver1) : "N/A"}
               </td>
               <td className="line" data-heading={COLUMNS[1]}>
-                Alexander Albon / Alpine F1 Team
+                {myDrivers ? capitalizeFirstLetters(myDrivers.driver2) : "N/A"}
               </td>
               <td className="line" data-heading={COLUMNS[2]}>
-                Alexander Albon / Alpine F1 Team
+                {myDrivers ? capitalizeFirstLetters(myDrivers.driver3) : "N/A"}
               </td>
               <td className="line" data-heading={COLUMNS[3]}>
-                Alexander Albon / Alpine F1 Team
+                {myDrivers ? capitalizeFirstLetters(myDrivers.driver4) : "N/A"}
               </td>
               <td className="line" data-heading={COLUMNS[4]}>
-                Alexander Albon / Alpine F1 Team
+                {myDrivers ? capitalizeFirstLetters(myDrivers.driver5) : "N/A"}
               </td>
               <td className="line" data-heading={COLUMNS[5]}>
-                Alpine F1 Team
+                {myDrivers ? capitalizeFirstLetters(myDrivers.teamName) : "N/A"}
               </td>
             </tr>
           </tbody>

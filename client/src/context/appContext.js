@@ -92,6 +92,9 @@ const initialState = {
   totalDrivers: 0,
   numOfDriversPages: 1,
   pageDriver: 1,
+  // My Drivers
+  myDrivers: [],
+  location: "",
 };
 
 const AppContext = createContext();
@@ -354,12 +357,14 @@ const AppProvider = ({ children }) => {
     dispatch({ type: GET_MY_DRIVERS_BEGIN });
     try {
       const { data } = await authFetch.get("/mydrivers");
-      const { locationCloseDate } = data;
+      const { locationCloseDate, myDrivers, location } = data;
 
       dispatch({
         type: GET_MY_DRIVERS_SUCCESS,
         payload: {
           locationCloseDate,
+          myDrivers,
+          location,
         },
       });
     } catch (error) {

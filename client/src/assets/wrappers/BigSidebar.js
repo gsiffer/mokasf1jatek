@@ -30,6 +30,7 @@ const Wrapper = styled.aside`
       padding-top: 2rem;
       display: flex;
       flex-direction: column;
+      /* overflow-y: auto; */
     }
     .nav-link {
       display: flex;

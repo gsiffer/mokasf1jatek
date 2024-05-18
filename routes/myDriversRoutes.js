@@ -1,10 +1,12 @@
 import express from "express";
 const router = express.Router();
-import { getMyDrivers } from "../controllers/myDriversController.js";
+import {
+  getMyDrivers,
+  createMyDrivers,
+  updateMyDrivers,
+} from "../controllers/myDriversController.js";
 
-router.route("/").get(getMyDrivers);
-// router.route("/").post(createJob).get(getAllJob);
-// router.route("/stats").get(showStats);
-// router.route("/:id").delete(deleteJob).patch(updateJob);
+router.route("/").post(createMyDrivers).get(getMyDrivers);
+router.route("/:id").patch(updateMyDrivers);
 
 export default router;

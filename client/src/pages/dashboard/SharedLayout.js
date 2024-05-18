@@ -6,6 +6,7 @@ import { useAppContext } from "../../context/appContext";
 import LocationForm from "../../components/LocationForm";
 import ConstructorForm from "../../components/ConstructorForm";
 import DriverForm from "../../components/DriverForm";
+import MyDriversForm from "../../components/MyDriversForm";
 
 const SharedLayout = () => {
   const { slidingPanel } = useAppContext();
@@ -25,6 +26,7 @@ const SharedLayout = () => {
         {slidingPanel.panelName === "location" && <LocationForm />}
         {slidingPanel.panelName === "constructor" && <ConstructorForm />}
         {slidingPanel.panelName === "driver" && <DriverForm />}
+        {slidingPanel.panelName === "my_drivers" && <MyDriversForm />}
       </SlidingPanel>
     </Wrapper>
   );

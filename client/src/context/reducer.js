@@ -340,6 +340,8 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       locationCloseDate: action.payload.locationCloseDate,
+      myDrivers: action.payload.myDrivers,
+      location: action.payload.location,
     };
   }
 

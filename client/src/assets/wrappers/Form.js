@@ -24,7 +24,7 @@ const Wrapper = styled.section`
   .form-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
   }
 
   .close-x-btn {
@@ -44,7 +44,7 @@ const Wrapper = styled.section`
   .btn-container {
     display: flex;
     justify-content: end;
-    margin-top: 50px;
+    margin-top: 20px;
     gap: 10px;
   }
 

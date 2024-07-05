@@ -23,11 +23,11 @@ const register = async (req, res) => {
     user: {
       email: user.email,
       lastName: user.lastName,
-      location: user.location,
+      nickname: user.nickname,
       name: user.name,
       role: user.role,
     },
-    location: user.location,
+    nickname: user.nickname,
   });
 };
 
@@ -54,13 +54,13 @@ const login = async (req, res) => {
 
   res.status(StatusCodes.OK).json({
     user,
-    location: user.location,
+    nickname: user.nickname,
   });
 };
 
 const updateUser = async (req, res) => {
-  const { email, name, lastName, location } = req.body;
-  if (!email || !name || !lastName || !location) {
+  const { email, name, lastName, nickname } = req.body;
+  if (!email || !name || !lastName || !nickname) {
     throw new BadRequestError("Please provide all values");
   }
 
@@ -69,7 +69,7 @@ const updateUser = async (req, res) => {
   user.email = email;
   user.name = name;
   user.lastName = lastName;
-  user.location = location;
+  user.nickname = nickname;
 
   await user.save();
 
@@ -82,7 +82,7 @@ const updateUser = async (req, res) => {
 
   res.status(StatusCodes.OK).json({
     user,
-    location: user.location,
+    nickname: user.nickname,
   });
 };
 
@@ -112,12 +112,12 @@ const updatePassword = async (req, res) => {
   user.password = undefined;
   attachCookie({ res, token });
 
-  res.status(StatusCodes.OK).json({ user, location: user.location });
+  res.status(StatusCodes.OK).json({ user, nickname: user.nickname });
 };
 
 const getCurrentUser = async (req, res) => {
   const user = await User.findOne({ _id: req.user.userId });
-  res.status(StatusCodes.OK).json({ user, location: user.location });
+  res.status(StatusCodes.OK).json({ user, nickname: user.nickname });
 };
 
 const logout = async (req, res) => {

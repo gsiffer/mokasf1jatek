@@ -23,7 +23,7 @@ const Profile = () => {
     name: user?.name,
     email: user?.email,
     lastName: user?.lastName,
-    location: user?.location,
+    nickname: user?.nickname,
   });
 
   const initialChangePassword = {
@@ -40,7 +40,7 @@ const Profile = () => {
       !userData.name ||
       !userData.email ||
       !userData.lastName ||
-      !userData.location
+      !userData.nickname
     ) {
       // test and remove temporary
       displayAlert("Please provide all values");
@@ -112,10 +112,10 @@ const Profile = () => {
 
           <FormRow
             type="text"
-            name="location"
-            value={userData.location}
+            name="nickname"
+            value={userData.nickname}
             handleChange={(e) =>
-              setUserData({ ...userData, location: e.target.value })
+              setUserData({ ...userData, nickname: e.target.value })
             }
           />
         </div>

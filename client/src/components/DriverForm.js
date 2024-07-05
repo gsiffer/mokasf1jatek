@@ -11,7 +11,7 @@ import capitalizeFirstLetters from "../utils/capitalizeFirstLetters";
 
 const DriverForm = () => {
   const {
-    drivers,
+    driversPerPage,
     slidingPanel,
     slidePanel,
     createDriver,
@@ -44,7 +44,7 @@ const DriverForm = () => {
     firstNameInputRef.current.focus();
 
     if (slidingPanel.editID !== 0) {
-      const editedDriver = drivers.find(
+      const editedDriver = driversPerPage.find(
         (driver) => driver._id === slidingPanel.editID
       );
 
@@ -53,10 +53,14 @@ const DriverForm = () => {
           ...formData,
           firstName: editedDriver.firstName,
           lastName: editedDriver.lastName,
-          teamName: editedDriver.teamName._id,
+          teamName: editedDriver.teamName ? editedDriver.teamName._id : "",
         });
         setSelectedTeamOption(
-          options.find((item) => item.value === editedDriver.teamName._id)
+          // options.find((item) => item.value === editedDriver.teamName._id)
+          options.find((item) => item.value === editedDriver.teamName?._id) || {
+            label: "N/A",
+            value: "N/A",
+          }
         );
       }
     }
@@ -106,6 +110,7 @@ const DriverForm = () => {
   };
 
   const handleTeamOptionChange = (selectedOption) => {
+    // console.log(selectedOption);
     setSelectedTeamOption(selectedOption);
     setFormData({
       ...formData,

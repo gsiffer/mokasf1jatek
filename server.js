@@ -56,13 +56,8 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/mydrivers", authenticateUser, myDriversRouter);
 
 app.use("/api/v1/locations", authenticateUser, authUserRole, locationsRouter);
-app.use(
-  "/api/v1/constructors",
-  authenticateUser,
-  authUserRole,
-  constructorsRouter
-);
-app.use("/api/v1/drivers", authenticateUser, authUserRole, driversRouter);
+app.use("/api/v1/constructors", authenticateUser, constructorsRouter);
+app.use("/api/v1/drivers", authenticateUser, driversRouter);
 
 app.get("*", function (request, response) {
   response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));

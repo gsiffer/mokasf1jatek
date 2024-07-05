@@ -28,6 +28,12 @@ import {
   EDIT_LOCATION_ERROR,
   GET_MY_DRIVERS_BEGIN,
   GET_MY_DRIVERS_SUCCESS,
+  CREATE_MY_DRIVERS_BEGIN,
+  CREATE_MY_DRIVERS_SUCCESS,
+  CREATE_MY_DRIVERS_ERROR,
+  EDIT_MY_DRIVERS_BEGIN,
+  EDIT_MY_DRIVERS_SUCCESS,
+  EDIT_MY_DRIVERS_ERROR,
   GET_CONSTRUCTORS_BEGIN,
   GET_CONSTRUCTORS_SUCCESS,
   HANDLE_CHANGE,
@@ -41,6 +47,8 @@ import {
   EDIT_CONSTRUCTOR_ERROR,
   GET_DRIVERS_BEGIN,
   GET_DRIVERS_SUCCESS,
+  GET_DRIVERS_PER_PAGE_BEGIN,
+  GET_DRIVERS_PER_PAGE_SUCCESS,
   CREATE_DRIVER_BEGIN,
   CREATE_DRIVER_SUCCESS,
   CREATE_DRIVER_ERROR,
@@ -345,6 +353,54 @@ const reducer = (state, action) => {
     };
   }
 
+  if (action.type === CREATE_MY_DRIVERS_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === CREATE_MY_DRIVERS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "New My Drivrers Created!",
+      isDisplayErrorOnForm: true,
+    };
+  }
+  if (action.type === CREATE_MY_DRIVERS_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: true,
+    };
+  }
+
+  if (action.type === EDIT_MY_DRIVERS_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === EDIT_MY_DRIVERS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "MY Drivers Updated!",
+      isDisplayErrorOnForm: true,
+    };
+  }
+  if (action.type === EDIT_MY_DRIVERS_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: true,
+    };
+  }
+
   if (action.type === GET_CONSTRUCTORS_BEGIN) {
     return { ...state, isLoading: true, showAlert: false };
   }
@@ -434,7 +490,18 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      drivers: action.payload.drivers,
+      allDrivers: action.payload.drivers,
+    };
+  }
+
+  if (action.type === GET_DRIVERS_PER_PAGE_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_DRIVERS_PER_PAGE_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      driversPerPage: action.payload.drivers,
       totalDrivers: action.payload.totalDrivers,
       numOfDriversPages: action.payload.numOfDriversPages,
     };

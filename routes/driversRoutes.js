@@ -2,12 +2,18 @@ import express from "express";
 const router = express.Router();
 import {
   createDriver,
-  getAllDriver,
+  getAllDriverPerPage,
+  getAllDrivers,
   updateDriver,
   deleteDriver,
 } from "../controllers/driversController.js";
+import authUserRole from "../middleware/authUserRole.js";
 
-router.route("/").post(createDriver).get(getAllDriver);
-router.route("/:id").delete(deleteDriver).patch(updateDriver);
+router.route("/").post(authUserRole, createDriver).get(getAllDrivers);
+router.route("/page").get(authUserRole, getAllDriverPerPage);
+router
+  .route("/:id")
+  .delete(authUserRole, deleteDriver)
+  .patch(authUserRole, updateDriver);
 
 export default router;

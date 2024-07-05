@@ -13,6 +13,7 @@ const getMyDrivers = async (req, res) => {
   if (location) {
     myDrivers = await MyDrivers.findOne({
       locationName: location._id,
+      createdBy: req.user.userId,
     }).populate({
       path: "locationName",
       model: "Location",
@@ -26,6 +27,7 @@ const getMyDrivers = async (req, res) => {
 };
 
 const createMyDrivers = async (req, res) => {
+  console.log(req);
   const {
     locationName,
     driver1,
@@ -55,13 +57,14 @@ const createMyDrivers = async (req, res) => {
 
   if (!location) {
     throw new BadRequestError("No active location");
-  } else if (
-    formatDateTimeToCET(location.locationCloseDate) < formatDateTimeToCET()
-  ) {
+  } else if (new Date(location.locationCloseDate) < new Date()) {
     throw new BadRequestError("The time has expired");
   }
 
-  const count = await MyDrivers.countDocuments({ locationName: location._id });
+  const count = await MyDrivers.countDocuments({
+    locationName: location._id,
+    createdBy: req.user.userId,
+  });
 
   if (count > 0) {
     throw new BadRequestError("There is already a saved item in the database");
@@ -104,13 +107,14 @@ const updateMyDrivers = async (req, res) => {
 
   if (!location) {
     throw new BadRequestError("No active location");
-  } else if (
-    formatDateTimeToCET(location.locationCloseDate) < formatDateTimeToCET()
-  ) {
+  } else if (new Date(location.locationCloseDate) < new Date()) {
     throw new BadRequestError("The time has expired");
   }
 
-  const myDrivers = await MyDrivers.findOne({ _id: myDriverId });
+  const myDrivers = await MyDrivers.findOne({
+    _id: myDriverId,
+    createdBy: req.user.userId,
+  });
   if (!myDrivers) {
     throw new NotFoundError(`No driver with id ${myDriverId}`);
   }

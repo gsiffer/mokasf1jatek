@@ -6,8 +6,12 @@ import {
   deleteConstructor,
   updateConstructor,
 } from "../controllers/constructorsController.js";
+import authUserRole from "../middleware/authUserRole.js";
 
-router.route("/").post(createConstructor).get(getAllConstructor);
-router.route("/:id").delete(deleteConstructor).patch(updateConstructor);
+router.route("/").post(authUserRole, createConstructor).get(getAllConstructor);
+router
+  .route("/:id")
+  .delete(authUserRole, deleteConstructor)
+  .patch(authUserRole, updateConstructor);
 
 export default router;

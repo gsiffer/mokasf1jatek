@@ -14,18 +14,35 @@ const createDriver = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ driver });
 };
 
-const getAllDriver = async (req, res) => {
+const getAllDrivers = async (req, res) => {
+  // No await
+  const drivers = await Driver.find().populate({
+    path: "teamName",
+    model: "Constructor",
+    select: "constructorName",
+  });
+
+  res.status(StatusCodes.OK).json({ drivers });
+};
+
+const getAllDriverPerPage = async (req, res) => {
   const results = await Driver.find().populate({
     path: "teamName",
     model: "Constructor",
     select: "constructorName",
   });
 
-  results.sort((a, b) =>
+  console.log(results);
+
+  results.sort((a, b) => {
+    if (!a.teamName && !b.teamName) return 0;
+    if (!a.teamName) return 1;
+    if (!b.teamName) return -1;
+
     a.teamName.constructorName.localeCompare(b.teamName.constructorName, "en", {
       sensitivity: "base",
-    })
-  );
+    });
+  });
 
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
@@ -102,4 +119,10 @@ const deleteDriver = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Success! Driver removed" });
 };
 
-export { createDriver, getAllDriver, updateDriver, deleteDriver };
+export {
+  createDriver,
+  getAllDrivers,
+  getAllDriverPerPage,
+  updateDriver,
+  deleteDriver,
+};

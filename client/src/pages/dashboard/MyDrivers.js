@@ -159,10 +159,17 @@ const MyDrivers = () => {
             type="button"
             className="btn btn-height"
             onClick={() =>
-              slidePanel(!slidingPanel.isPanelSlide, "my_drivers", true)
+              myDrivers
+                ? slidePanel(
+                    !slidingPanel.isPanelSlide,
+                    "my_drivers",
+                    false,
+                    myDrivers._id
+                  )
+                : slidePanel(!slidingPanel.isPanelSlide, "my_drivers", true)
             }
           >
-            New Bet
+            {myDrivers ? "Edit Bet" : "New Bet"}
           </button>
           {/* )} */}
         </div>

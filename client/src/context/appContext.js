@@ -33,6 +33,12 @@ import {
   EDIT_LOCATION_ERROR,
   GET_MY_DRIVERS_BEGIN,
   GET_MY_DRIVERS_SUCCESS,
+  CREATE_MY_DRIVERS_BEGIN,
+  CREATE_MY_DRIVERS_SUCCESS,
+  CREATE_MY_DRIVERS_ERROR,
+  EDIT_MY_DRIVERS_BEGIN,
+  EDIT_MY_DRIVERS_SUCCESS,
+  EDIT_MY_DRIVERS_ERROR,
   GET_CONSTRUCTORS_BEGIN,
   GET_CONSTRUCTORS_SUCCESS,
   HANDLE_CHANGE,
@@ -46,6 +52,8 @@ import {
   EDIT_CONSTRUCTOR_ERROR,
   GET_DRIVERS_BEGIN,
   GET_DRIVERS_SUCCESS,
+  GET_DRIVERS_PER_PAGE_BEGIN,
+  GET_DRIVERS_PER_PAGE_SUCCESS,
   CREATE_DRIVER_BEGIN,
   CREATE_DRIVER_SUCCESS,
   CREATE_DRIVER_ERROR,
@@ -88,7 +96,8 @@ const initialState = {
   constructors: [],
   sortConstructors: "a-z",
   // Drivers
-  drivers: [],
+  allDrivers: [],
+  driversPerPage: [],
   totalDrivers: 0,
   numOfDriversPages: 1,
   pageDriver: 1,
@@ -373,6 +382,74 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const createMyDrivers = async (data) => {
+    dispatch({ type: CREATE_MY_DRIVERS_BEGIN });
+    try {
+      const locationName = data.locationName.trim();
+      const driver1 = data.driver1.trim();
+      const driver2 = data.driver2.trim();
+      const driver3 = data.driver3.trim();
+      const driver4 = data.driver4.trim();
+      const driver5 = data.driver5.trim();
+      const teamName = data.teamName.trim();
+
+      await authFetch.post("/mydrivers", {
+        locationName,
+        driver1,
+        driver2,
+        driver3,
+        driver4,
+        driver5,
+        teamName,
+      });
+      getMyDrivers();
+      dispatch({
+        type: CREATE_MY_DRIVERS_SUCCESS,
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: CREATE_MY_DRIVERS_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const editMyDrivers = async (data) => {
+    dispatch({ type: EDIT_MY_DRIVERS_BEGIN });
+    try {
+      const locationName = data.locationName.trim();
+      const driver1 = data.driver1.trim();
+      const driver2 = data.driver2.trim();
+      const driver3 = data.driver3.trim();
+      const driver4 = data.driver4.trim();
+      const driver5 = data.driver5.trim();
+      const teamName = data.teamName.trim();
+
+      await authFetch.patch(`/mydrivers/${state.slidingPanel.editID}`, {
+        locationName,
+        driver1,
+        driver2,
+        driver3,
+        driver4,
+        driver5,
+        teamName,
+      });
+      getMyDrivers();
+      dispatch({
+        type: EDIT_MY_DRIVERS_SUCCESS,
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_MY_DRIVERS_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
   const getConstructors = async () => {
     const { sortConstructors } = state;
     let url = `/constructors?sort=${sortConstructors}`;
@@ -459,11 +536,31 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
-  const getDrivers = async () => {
-    const { pageDriver } = state;
-    let url = `/drivers?page=${pageDriver}`;
+  const getAllDrivers = async () => {
+    let url = "/drivers";
 
     dispatch({ type: GET_DRIVERS_BEGIN });
+    try {
+      const { data } = await authFetch.get(url); // or authFetch(url) -> get is the default;
+      const { drivers } = data;
+
+      dispatch({
+        type: GET_DRIVERS_SUCCESS,
+        payload: {
+          drivers,
+        },
+      });
+    } catch (error) {
+      logoutUser();
+    }
+    clearAlert();
+  };
+
+  const getDriversPerPage = async () => {
+    const { pageDriver } = state;
+    let url = `/drivers/page?page=${pageDriver}`;
+
+    dispatch({ type: GET_DRIVERS_PER_PAGE_BEGIN });
     try {
       const { data } = await authFetch.get(url); // or authFetch(url) -> get is the default;
       const { drivers, totalDrivers, numOfDriversPages } = data;
@@ -473,7 +570,7 @@ const AppProvider = ({ children }) => {
       }
 
       dispatch({
-        type: GET_DRIVERS_SUCCESS,
+        type: GET_DRIVERS_PER_PAGE_SUCCESS,
         payload: {
           drivers,
           totalDrivers,
@@ -498,7 +595,7 @@ const AppProvider = ({ children }) => {
         lastName,
         teamName,
       });
-      getDrivers();
+      getDriversPerPage();
       dispatch({
         type: CREATE_DRIVER_SUCCESS,
       });
@@ -524,7 +621,7 @@ const AppProvider = ({ children }) => {
         lastName,
         teamName,
       });
-      getDrivers();
+      getDriversPerPage();
       dispatch({
         type: EDIT_DRIVER_SUCCESS,
       });
@@ -542,7 +639,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: DELETE_DRIVER_BEGIN });
     try {
       await authFetch.delete(`/drivers/${driverId}`);
-      getDrivers();
+      getDriversPerPage();
     } catch (error) {
       // console.log(error.response);
       if (error.response.status === 401) return;
@@ -578,12 +675,15 @@ const AppProvider = ({ children }) => {
         deleteLocation,
         editLocation,
         getMyDrivers,
+        createMyDrivers,
+        editMyDrivers,
         getConstructors,
         handleChange,
         createConstructor,
         deleteConstructor,
         editConstructor,
-        getDrivers,
+        getAllDrivers,
+        getDriversPerPage,
         createDriver,
         editDriver,
         deleteDriver,

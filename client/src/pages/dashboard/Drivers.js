@@ -13,9 +13,9 @@ const Drivers = () => {
   const COLUMNS = ["First Name", "Last Name", "Team Name", "Options"];
 
   const {
-    drivers,
+    driversPerPage,
     isLoading,
-    getDrivers,
+    getDriversPerPage,
     totalDrivers,
     numOfDriversPages,
     pageDriver,
@@ -28,7 +28,7 @@ const Drivers = () => {
   } = useAppContext();
 
   useEffect(() => {
-    getDrivers();
+    getDriversPerPage();
     getConstructors(); // Get all constructor for the driver form to fill the constructor drop down
   }, [pageDriver]);
 
@@ -50,7 +50,7 @@ const Drivers = () => {
         <div className="table-menu">
           <div className="page-count-header">
             <h5>
-              {totalDrivers} driver{drivers.length > 1 && "s"} found
+              {totalDrivers} driver{driversPerPage.length > 1 && "s"} found
             </h5>
 
             <h5 className="page-count">
@@ -79,7 +79,7 @@ const Drivers = () => {
           </thead>
 
           <tbody>
-            {drivers.map((driver) => (
+            {driversPerPage.map((driver) => (
               <tr key={driver._id}>
                 <td data-heading={COLUMNS[0]}>
                   {capitalizeFirstLetters(driver.firstName)}
@@ -88,7 +88,9 @@ const Drivers = () => {
                   {capitalizeFirstLetters(driver.lastName)}
                 </td>
                 <td data-heading={COLUMNS[2]}>
-                  {capitalizeFirstLetters(driver.teamName.constructorName)}
+                  {driver.teamName
+                    ? capitalizeFirstLetters(driver.teamName.constructorName)
+                    : "N/A"}
                 </td>
                 <td className="content-none">
                   <div className="options-container">

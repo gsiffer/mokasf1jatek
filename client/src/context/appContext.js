@@ -656,13 +656,24 @@ const AppProvider = ({ children }) => {
   const getExcel = async () => {
     dispatch({ type: GET_EXCEL_BEGIN });
     try {
-      await authFetch.get("/mydrivers/excel"); // or authFetch(url) -> get is the default;
+      const response = await authFetch.get("/mydrivers/excel", {
+        responseType: "blob", // Ensure response type is blob for file download
+      });
+
+      // Create a blob URL and initiate download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "MokasF1Jatek.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link); // Clean up after download
 
       dispatch({
         type: GET_EXCEL_SUCCESS,
       });
     } catch (error) {
-      // console.log(error.response);
+      console.error("Failed to fetch Excel file:", error);
       logoutUser();
     }
     clearAlert();

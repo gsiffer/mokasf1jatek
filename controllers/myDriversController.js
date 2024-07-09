@@ -147,65 +147,75 @@ const updateMyDrivers = async (req, res) => {
 };
 
 const getMyDriversExcel = async (req, res) => {
-  const location = await Location.findOne({ isLocationActive: true });
-  const locationId = location ? location._id : null;
+  try {
+    const location = await Location.findOne({ isLocationActive: true });
+    const locationId = location ? location._id : null;
 
-  const bets = locationId
-    ? await MyDrivers.find({ locationName: locationId })
-    : [];
+    const bets = locationId
+      ? await MyDrivers.find({ locationName: locationId })
+      : [];
 
-  // Fetch the user information and add it to each bet
-  const updatedBets = [];
-  for (const bet of bets) {
-    const user = await User.findById(bet.createdBy);
-    if (user) {
-      updatedBets.push({
-        ...bet.toObject(),
-        name: user.name.toLowerCase(),
-        lastName: user.lastName.toLowerCase(),
-        nickname: user.nickname.toLowerCase(),
-        location: location.locationName.toLowerCase(),
-      });
-    } else {
-      updatedBets.push({
-        ...bet.toObject(),
-        name: "unknown first name",
-        lastName: "unknown last name",
-        nickname: "unknown nickname",
-        location: location.locationName.toLowerCase(),
-      });
+    // Fetch the user information and add it to each bet
+    const updatedBets = [];
+    for (const bet of bets) {
+      const user = await User.findById(bet.createdBy);
+      if (user) {
+        updatedBets.push({
+          ...bet.toObject(),
+          name: user.name.toLowerCase(),
+          lastName: user.lastName.toLowerCase(),
+          nickname: user.nickname.toLowerCase(),
+          location: location.locationName.toLowerCase(),
+        });
+      } else {
+        updatedBets.push({
+          ...bet.toObject(),
+          name: "unknown first name",
+          lastName: "unknown last name",
+          nickname: "unknown nickname",
+          location: location.locationName.toLowerCase(),
+        });
+      }
     }
+
+    // Prepare data for Excel
+    const dataForExcel = updatedBets.map((bet) => ({
+      Time: formatDateTimeToCET(bet.updatedAt),
+      Name: capitalizeFirstLetters(`${bet.name} ${bet.lastName}`),
+      Nickname: capitalizeFirstLetters(bet.nickname),
+      Driver1: capitalizeFirstLetters(bet.driver1),
+      Driver2: capitalizeFirstLetters(bet.driver2),
+      Driver3: capitalizeFirstLetters(bet.driver3),
+      Driver4: capitalizeFirstLetters(bet.driver4),
+      Driver5: capitalizeFirstLetters(bet.driver5),
+      Team: capitalizeFirstLetters(bet.teamName),
+      Location: capitalizeFirstLetters(bet.location),
+    }));
+
+    // Create a new workbook and add a worksheet
+    const workbook = xlsx.utils.book_new();
+    const worksheet = xlsx.utils.json_to_sheet(dataForExcel);
+    xlsx.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    // Define the path to temporarily save the Excel file
+    const desktopDir = path.join(os.homedir(), "Desktop");
+    const filePath = path.join(desktopDir, "MokasF1Jatek (válaszok).xlsx");
+
+    // Write the workbook to a file
+    xlsx.writeFile(workbook, filePath);
+
+    // Stream the file to the client as a response
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+
+    // Optionally, delete the file after streaming (commented out for now)
+    // fileStream.on("end", () => {
+    //   fs.unlinkSync(filePath);
+    // });
+  } catch (error) {
+    console.error("Error generating Excel file:", error);
+    res.status(500).json({ error: "Failed to generate Excel file" });
   }
-
-  // Prepare data for Excel
-  const dataForExcel = updatedBets.map((bet) => ({
-    Time: formatDateTimeToCET(bet.updatedAt),
-    Name: capitalizeFirstLetters(`${bet.name} ${bet.lastName}`),
-    Nickname: capitalizeFirstLetters(bet.nickname),
-    Driver1: capitalizeFirstLetters(bet.driver1),
-    Driver2: capitalizeFirstLetters(bet.driver2),
-    Driver3: capitalizeFirstLetters(bet.driver3),
-    Driver4: capitalizeFirstLetters(bet.driver4),
-    Driver5: capitalizeFirstLetters(bet.driver5),
-    Team: capitalizeFirstLetters(bet.teamName),
-    Location: capitalizeFirstLetters(bet.location),
-  }));
-
-  // Create a new workbook and add a worksheet
-  const workbook = xlsx.utils.book_new();
-  const worksheet = xlsx.utils.json_to_sheet(dataForExcel);
-  xlsx.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-
-  // Define the path to temporarily save the Excel file
-  const desktopDir = path.join(os.homedir(), "Desktop");
-  const filePath = path.join(desktopDir, "MokasF1Jatek (válaszok).xlsx");
-
-  // Write the workbook to a file
-  xlsx.writeFile(workbook, filePath);
-
-  // Stream the file to the client as a response
-  const fileStream = fs.createReadStream(filePath);
-  fileStream.pipe(res);
 
   // const location = await Location.findOne({ isLocationActive: true });
   // const locationId = location ? location._id : null;

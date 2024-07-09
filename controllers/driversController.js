@@ -32,16 +32,18 @@ const getAllDriverPerPage = async (req, res) => {
     select: "constructorName",
   });
 
-  console.log(results);
-
   results.sort((a, b) => {
     if (!a.teamName && !b.teamName) return 0;
     if (!a.teamName) return 1;
     if (!b.teamName) return -1;
 
-    a.teamName.constructorName.localeCompare(b.teamName.constructorName, "en", {
-      sensitivity: "base",
-    });
+    return a.teamName.constructorName.localeCompare(
+      b.teamName.constructorName,
+      "en",
+      {
+        sensitivity: "base",
+      }
+    );
   });
 
   const page = Number(req.query.page) || 1;

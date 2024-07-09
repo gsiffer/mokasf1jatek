@@ -148,35 +148,30 @@ const updateMyDrivers = async (req, res) => {
 
 const getMyDriversExcel = async (req, res) => {
   try {
+    // Fetch active location
     const location = await Location.findOne({ isLocationActive: true });
     const locationId = location ? location._id : null;
 
+    // Fetch bets for the active location
     const bets = locationId
       ? await MyDrivers.find({ locationName: locationId })
       : [];
 
-    // Fetch the user information and add it to each bet
-    const updatedBets = [];
-    for (const bet of bets) {
-      const user = await User.findById(bet.createdBy);
-      if (user) {
-        updatedBets.push({
+    // Fetch user information and prepare data for Excel
+    const updatedBets = await Promise.all(
+      bets.map(async (bet) => {
+        const user = await User.findById(bet.createdBy);
+        return {
           ...bet.toObject(),
-          name: user.name.toLowerCase(),
-          lastName: user.lastName.toLowerCase(),
-          nickname: user.nickname.toLowerCase(),
-          location: location.locationName.toLowerCase(),
-        });
-      } else {
-        updatedBets.push({
-          ...bet.toObject(),
-          name: "unknown first name",
-          lastName: "unknown last name",
-          nickname: "unknown nickname",
-          location: location.locationName.toLowerCase(),
-        });
-      }
-    }
+          name: user ? user.name.toLowerCase() : "unknown first name",
+          lastName: user ? user.lastName.toLowerCase() : "unknown last name",
+          nickname: user ? user.nickname.toLowerCase() : "unknown nickname",
+          location: location
+            ? location.locationName.toLowerCase()
+            : "unknown location",
+        };
+      })
+    );
 
     // Prepare data for Excel
     const dataForExcel = updatedBets.map((bet) => ({
@@ -192,26 +187,29 @@ const getMyDriversExcel = async (req, res) => {
       Location: capitalizeFirstLetters(bet.location),
     }));
 
-    // Create a new workbook and add a worksheet
+    // Create a new workbook and worksheet
     const workbook = xlsx.utils.book_new();
     const worksheet = xlsx.utils.json_to_sheet(dataForExcel);
-    xlsx.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    xlsx.utils.book_append_sheet(workbook, worksheet, "MyDrivers");
 
-    // Define the path to temporarily save the Excel file
-    const desktopDir = path.join(os.homedir(), "Desktop");
-    const filePath = path.join(desktopDir, "MokasF1Jatek (válaszok).xlsx");
+    // Stream the file to the client
+    const excelBuffer = xlsx.write(workbook, {
+      type: "buffer",
+      bookType: "xlsx",
+    });
 
-    // Write the workbook to a file
-    xlsx.writeFile(workbook, filePath);
+    // Set headers for response
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename= "Valami"' //"MokasF1Jatek (válaszok).xlsx"'
+    );
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
 
-    // Stream the file to the client as a response
-    const fileStream = fs.createReadStream(filePath);
-    fileStream.pipe(res);
-
-    // Optionally, delete the file after streaming (commented out for now)
-    // fileStream.on("end", () => {
-    //   fs.unlinkSync(filePath);
-    // });
+    // Send the buffer as a stream to the response
+    res.end(excelBuffer);
   } catch (error) {
     console.error("Error generating Excel file:", error);
     res.status(500).json({ error: "Failed to generate Excel file" });

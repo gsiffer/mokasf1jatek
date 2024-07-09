@@ -20,8 +20,8 @@ const MyDriversForm = () => {
     isDisplayErrorOnForm,
     myDrivers,
     editMyDrivers,
-    getAllDrivers,
-    getConstructors,
+    // getAllDrivers,
+    // getConstructors,
     constructors,
   } = useAppContext();
 
@@ -61,8 +61,8 @@ const MyDriversForm = () => {
   }));
 
   useEffect(() => {
-    getAllDrivers();
-    getConstructors();
+    // getAllDrivers();
+    // getConstructors();
     //   firstNameInputRef.current.focus();
 
     if (slidingPanel.editID !== 0) {

@@ -32,6 +32,8 @@ const MyDrivers = () => {
     location,
     slidingPanel,
     slidePanel,
+    getAllDrivers,
+    getConstructors,
   } = useAppContext();
 
   const [remainingTime, setRemainingTime] = useState({
@@ -45,6 +47,8 @@ const MyDrivers = () => {
   let timerId = null;
 
   useEffect(() => {
+    getAllDrivers();
+    getConstructors();
     getMyDrivers();
     return () => {
       // console.log("LEAVE");

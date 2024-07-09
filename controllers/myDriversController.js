@@ -199,6 +199,8 @@ const getMyDriversExcel = async (req, res) => {
   const desktopDir = path.join(os.homedir(), "Desktop");
   const filePath = path.join(desktopDir, "MokasF1Jatek (válaszok).xlsx");
 
+  console.log(`Desktop: ${desktopDir}, filePath: ${filePath}`);
+
   // Write the workbook to a file
   xlsx.writeFile(workbook, filePath);
 

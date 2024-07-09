@@ -202,10 +202,25 @@ const getMyDriversExcel = async (req, res) => {
   // Write the workbook to a file
   xlsx.writeFile(workbook, filePath);
 
+  res.download(filePath, "MokasF1Jatek (válaszok).xlsx", (err) => {
+    if (err) {
+      // Handle error
+      console.error("Error downloading file:", err);
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Failed to download file" });
+    } else {
+      // File download successful, you may choose to delete the file afterwards
+      console.log("File downloaded successfully");
+      // Optional: Delete the file after sending it
+      // fs.unlinkSync(filePath);
+    }
+  });
+
   // Inform the client that the file has been saved
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: `File saved to ${filePath}`, updatedBets });
+  // res
+  //   .status(StatusCodes.OK)
+  //   .json({ msg: `File saved to ${filePath}`, updatedBets });
 };
 
 export { getMyDrivers, createMyDrivers, updateMyDrivers, getMyDriversExcel };

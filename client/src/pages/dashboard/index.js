@@ -5,6 +5,7 @@ import Locations from "./Locations";
 import MyDrivers from "./MyDrivers";
 import Constructors from "./Constructors";
 import Drivers from "./Drivers";
+import Excel from "./Excel";
 
 export {
   Profile,
@@ -14,4 +15,5 @@ export {
   MyDrivers,
   Constructors,
   Drivers,
+  Excel,
 };

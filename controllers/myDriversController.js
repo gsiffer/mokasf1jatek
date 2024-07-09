@@ -7,6 +7,7 @@ import User from "../models/User.js";
 import xlsx from "xlsx";
 import path from "path";
 import os from "os";
+import capitalizeFirstLetters from "../utils/capitalizeFirstLetters.js";
 
 const getMyDrivers = async (req, res) => {
   const location = await Location.findOne({ isLocationActive: true });
@@ -144,12 +145,6 @@ const updateMyDrivers = async (req, res) => {
   res.status(StatusCodes.OK).json({ updatedMyDrivers });
 };
 
-// Function to find user name by ID
-// const findUserNameById = async (id) => {
-//   const user = await User.find((user) => user._id === id);
-//   return user ? user.name : "Unknown User";
-// };
-
 const getMyDriversExcel = async (req, res) => {
   const location = await Location.findOne({ isLocationActive: true });
   const locationId = location ? location._id : null;
@@ -183,30 +178,34 @@ const getMyDriversExcel = async (req, res) => {
 
   // Extract relevant fields for Excel
   const dataForExcel = updatedBets.map((bet) => ({
-    driver1: bet.driver1,
-    driver2: bet.driver2,
-    driver3: bet.driver3,
-    driver4: bet.driver4,
-    driver5: bet.driver5,
+    Time: formatDateTimeToCET(bet.updatedAt),
+    Name: capitalizeFirstLetters(`${bet.name} ${bet.lastName}`),
+    Nickname: capitalizeFirstLetters(bet.nickname),
+    Driver1: capitalizeFirstLetters(bet.driver1),
+    Driver2: capitalizeFirstLetters(bet.driver2),
+    Driver3: capitalizeFirstLetters(bet.driver3),
+    Driver4: capitalizeFirstLetters(bet.driver4),
+    Driver5: capitalizeFirstLetters(bet.driver5),
+    Team: capitalizeFirstLetters(bet.teamName),
+    Location: capitalizeFirstLetters(bet.location),
   }));
 
   // Create a new workbook and worksheet
   const workbook = xlsx.utils.book_new();
   const worksheet = xlsx.utils.json_to_sheet(dataForExcel);
-  xlsx.utils.book_append_sheet(workbook, worksheet, "My Drivers");
+  xlsx.utils.book_append_sheet(workbook, worksheet, "Sheet1");
 
   // Define the path to save the Excel file to the Desktop
   const desktopDir = path.join(os.homedir(), "Desktop");
-  const filePath = path.join(desktopDir, "my_drivers.xlsx");
+  const filePath = path.join(desktopDir, "MokasF1Jatek (válaszok).xlsx");
 
   // Write the workbook to a file
   xlsx.writeFile(workbook, filePath);
 
   // Inform the client that the file has been saved
-  res.status(StatusCodes.OK).json({ msg: `File saved to ${filePath}` });
-
-  // Send the updated list as a response
-  // res.status(StatusCodes.OK).json(updatedBets);
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: `File saved to ${filePath}`, updatedBets });
 };
 
 export { getMyDrivers, createMyDrivers, updateMyDrivers, getMyDriversExcel };

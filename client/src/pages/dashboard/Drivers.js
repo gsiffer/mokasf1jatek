@@ -13,6 +13,7 @@ const Drivers = () => {
   const COLUMNS = ["First Name", "Last Name", "Team Name", "Options"];
 
   const {
+    user,
     driversPerPage,
     isLoading,
     getDriversPerPage,
@@ -60,6 +61,7 @@ const Drivers = () => {
 
           <button
             type="button"
+            disabled={user.role === "admin" ? false : true}
             className="btn btn-height"
             onClick={() =>
               slidePanel(!slidingPanel.isPanelSlide, "driver", true)
@@ -96,12 +98,14 @@ const Drivers = () => {
                   <div className="options-container">
                     <button
                       type="button"
+                      disabled={user.role === "admin" ? false : true}
                       onClick={() => editDriverClick(driver._id)}
                     >
                       <EditIcon title="Edit driver" />
                     </button>
                     <button
                       type="button"
+                      disabled={user.role === "admin" ? false : true}
                       onClick={() => deleteDriver(driver._id)}
                     >
                       <DeleteIcon title="Delete driver" />

@@ -57,6 +57,8 @@ import {
   EDIT_DRIVER_ERROR,
   DELETE_DRIVER_BEGIN,
   DELETE_DRIVER_ERROR,
+  GET_EXCEL_BEGIN,
+  GET_EXCEL_SUCCESS,
 } from "./actions";
 
 import { initialState } from "./appContext";
@@ -567,6 +569,16 @@ const reducer = (state, action) => {
       alertType: "danger",
       alertText: action.payload.msg,
       isDisplayErrorOnForm: false,
+    };
+  }
+
+  if (action.type === GET_EXCEL_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_EXCEL_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
     };
   }
 

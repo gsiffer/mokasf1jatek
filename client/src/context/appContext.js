@@ -62,6 +62,8 @@ import {
   EDIT_DRIVER_ERROR,
   DELETE_DRIVER_BEGIN,
   DELETE_DRIVER_ERROR,
+  GET_EXCEL_BEGIN,
+  GET_EXCEL_SUCCESS,
 } from "./actions";
 
 // const token = localStorage.getItem("token");
@@ -651,6 +653,21 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const getExcel = async () => {
+    dispatch({ type: GET_EXCEL_BEGIN });
+    try {
+      await authFetch.get("/mydrivers/excel"); // or authFetch(url) -> get is the default;
+
+      dispatch({
+        type: GET_EXCEL_SUCCESS,
+      });
+    } catch (error) {
+      // console.log(error.response);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
   // const setLocationCalendar = (isLocationCalendarOpen) => {
   //   dispatch({
   //     type: SET_LOCATION_CALENDAR,
@@ -687,6 +704,7 @@ const AppProvider = ({ children }) => {
         createDriver,
         editDriver,
         deleteDriver,
+        getExcel,
       }}
     >
       {children}

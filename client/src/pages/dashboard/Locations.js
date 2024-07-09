@@ -14,6 +14,7 @@ const Locations = () => {
   const COLUMNS = ["Name", "Closing Date ( CET )", "Active", "Options"];
 
   const {
+    user,
     locations,
     isLoading,
     getLocations,
@@ -59,6 +60,7 @@ const Locations = () => {
 
           <button
             type="button"
+            disabled={user.role === "admin" ? false : true}
             className="btn btn-height"
             onClick={() =>
               slidePanel(!slidingPanel.isPanelSlide, "location", true)
@@ -93,12 +95,14 @@ const Locations = () => {
                   <div className="options-container">
                     <button
                       type="button"
+                      disabled={user.role === "admin" ? false : true}
                       onClick={() => editLocationClick(location._id)}
                     >
                       <EditIcon title="Edit location" />
                     </button>
                     <button
                       type="button"
+                      disabled={user.role === "admin" ? false : true}
                       onClick={() => deleteLocation(location._id)}
                     >
                       <DeleteIcon title="Delete location" />

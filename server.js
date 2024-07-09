@@ -55,7 +55,7 @@ app.use(mongoSanitize());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/mydrivers", authenticateUser, myDriversRouter);
 
-app.use("/api/v1/locations", authenticateUser, authUserRole, locationsRouter);
+app.use("/api/v1/locations", authenticateUser, locationsRouter);
 app.use("/api/v1/constructors", authenticateUser, constructorsRouter);
 app.use("/api/v1/drivers", authenticateUser, driversRouter);
 

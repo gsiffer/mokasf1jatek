@@ -10,7 +10,7 @@ import {
 import authUserRole from "../middleware/authUserRole.js";
 
 router.route("/").post(authUserRole, createDriver).get(getAllDrivers);
-router.route("/page").get(authUserRole, getAllDriverPerPage);
+router.route("/page").get(getAllDriverPerPage);
 router
   .route("/:id")
   .delete(authUserRole, deleteDriver)

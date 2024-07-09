@@ -3,6 +3,7 @@ import { ImProfile } from "react-icons/im";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdSportsScore } from "react-icons/md";
 import { GiMechanicGarage, GiFullMotorcycleHelmet } from "react-icons/gi";
+import { FaRegFileExcel } from "react-icons/fa";
 
 const links = [
   {
@@ -31,20 +32,27 @@ const links = [
     text: "locations",
     path: "locations",
     icon: <IoLocationSharp />,
-    role: "admin",
+    role: "user",
   },
   {
     id: 5,
     text: "constructors",
     path: "constructors",
     icon: <GiMechanicGarage />,
-    role: "admin",
+    role: "user",
   },
   {
     id: 6,
     text: "drivers",
     path: "drivers",
     icon: <GiFullMotorcycleHelmet />,
+    role: "user",
+  },
+  {
+    id: 7,
+    text: "convert to excel",
+    path: "excel",
+    icon: <FaRegFileExcel />,
     role: "admin",
   },
 ];

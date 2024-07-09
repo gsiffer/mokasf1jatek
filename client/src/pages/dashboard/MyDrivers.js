@@ -12,7 +12,7 @@ import capitalizeFirstLetters from "../../utils/capitalizeFirstLetters";
 const CET_TIME_ZONE = "Europe/Paris";
 
 const MyDrivers = () => {
-  const HEADER = "Drivers";
+  const HEADER = "My Drivers";
   const COLUMNS = [
     "Driver 1",
     "Driver 2",

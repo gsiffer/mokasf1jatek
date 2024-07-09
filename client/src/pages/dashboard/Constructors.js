@@ -18,6 +18,7 @@ const Constructors = () => {
   ];
 
   const {
+    user,
     constructors,
     isLoading,
     getConstructors,
@@ -97,6 +98,7 @@ const Constructors = () => {
 
           <button
             type="button"
+            disabled={user.role === "admin" ? false : true}
             className="btn btn-height"
             onClick={() =>
               slidePanel(!slidingPanel.isPanelSlide, "constructor", true)
@@ -126,12 +128,14 @@ const Constructors = () => {
                   <div className="options-container">
                     <button
                       type="button"
+                      disabled={user.role === "admin" ? false : true}
                       onClick={() => editConstructorClick(constructor._id)}
                     >
                       <EditIcon title="Edit constructor" />
                     </button>
                     <button
                       type="button"
+                      disabled={user.role === "admin" ? false : true}
                       onClick={() => deleteConstructor(constructor._id)}
                     >
                       <DeleteIcon title="Delete constructor" />

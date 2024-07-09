@@ -201,7 +201,7 @@ const getMyDriversExcel = async (req, res) => {
     // Set headers for response
     res.setHeader(
       "Content-Disposition",
-      'attachment; filename= "Valami"' //"MokasF1Jatek (válaszok).xlsx"'
+      'attachment; filename= "MokasF1Jatek (válaszok).xlsx"'
     );
     res.setHeader(
       "Content-Type",
@@ -214,75 +214,6 @@ const getMyDriversExcel = async (req, res) => {
     console.error("Error generating Excel file:", error);
     res.status(500).json({ error: "Failed to generate Excel file" });
   }
-
-  // const location = await Location.findOne({ isLocationActive: true });
-  // const locationId = location ? location._id : null;
-  // const bets = locationId
-  //   ? await MyDrivers.find({ locationName: locationId })
-  //   : [];
-  // // Fetch the user information and add it to each bet
-  // const updatedBets = [];
-  // for (const bet of bets) {
-  //   const user = await User.findById(bet.createdBy);
-  //   if (user) {
-  //     updatedBets.push({
-  //       ...bet.toObject(), // Convert mongoose document to plain object
-  //       name: user.name.toLowerCase(),
-  //       lastName: user.lastName.toLowerCase(),
-  //       nickname: user.nickname.toLowerCase(),
-  //       location: location.locationName.toLowerCase(),
-  //     });
-  //   } else {
-  //     updatedBets.push({
-  //       ...bet.toObject(),
-  //       name: "unknown first name",
-  //       lastName: "unknown last name",
-  //       nickname: "unknown nickname",
-  //       location: location.locationName.toLowerCase(),
-  //     });
-  //   }
-  // }
-  // // Extract relevant fields for Excel
-  // const dataForExcel = updatedBets.map((bet) => ({
-  //   Time: formatDateTimeToCET(bet.updatedAt),
-  //   Name: capitalizeFirstLetters(`${bet.name} ${bet.lastName}`),
-  //   Nickname: capitalizeFirstLetters(bet.nickname),
-  //   Driver1: capitalizeFirstLetters(bet.driver1),
-  //   Driver2: capitalizeFirstLetters(bet.driver2),
-  //   Driver3: capitalizeFirstLetters(bet.driver3),
-  //   Driver4: capitalizeFirstLetters(bet.driver4),
-  //   Driver5: capitalizeFirstLetters(bet.driver5),
-  //   Team: capitalizeFirstLetters(bet.teamName),
-  //   Location: capitalizeFirstLetters(bet.location),
-  // }));
-  // // Create a new workbook and worksheet
-  // const workbook = xlsx.utils.book_new();
-  // const worksheet = xlsx.utils.json_to_sheet(dataForExcel);
-  // xlsx.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-  // // Define the path to save the Excel file to the Desktop
-  // const desktopDir = path.join(os.homedir(), "Desktop");
-  // const filePath = path.join(desktopDir, "MokasF1Jatek (válaszok).xlsx");
-  // console.log(`Desktop: ${desktopDir}, filePath: ${filePath}`);
-  // // Write the workbook to a file
-  // xlsx.writeFile(workbook, filePath);
-  // res.download(filePath, "MokasF1Jatek (válaszok).xlsx", (err) => {
-  //   if (err) {
-  //     // Handle error
-  //     console.error("Error downloading file:", err);
-  //     res
-  //       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-  //       .json({ error: "Failed to download file" });
-  //   } else {
-  //     // File download successful, you may choose to delete the file afterwards
-  //     console.log("File downloaded successfully");
-  //     // Optional: Delete the file after sending it
-  //     // fs.unlinkSync(filePath);
-  //   }
-  // });
-  // // Inform the client that the file has been saved
-  // // res
-  // //   .status(StatusCodes.OK)
-  // //   .json({ msg: `File saved to ${filePath}`, updatedBets });
 };
 
 export { getMyDrivers, createMyDrivers, updateMyDrivers, getMyDriversExcel };

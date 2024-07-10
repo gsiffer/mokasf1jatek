@@ -161,6 +161,7 @@ const MyDrivers = () => {
           {/* {remainingTime.days != null && ( */}
           <button
             type="button"
+            disabled={new Date(locationCloseDate) < new Date() ? true : false}
             className="btn btn-height"
             onClick={() =>
               myDrivers

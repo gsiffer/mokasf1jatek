@@ -60,6 +60,16 @@ const MyDriversForm = () => {
     ),
   }));
 
+  // Sort optionsDrivers by constructorName
+  optionsDrivers.sort((a, b) => {
+    // Access the constructorName from each label and normalize for comparison
+    const teamNameA = a.label.split(" / ")[1].toLowerCase();
+    const teamNameB = b.label.split(" / ")[1].toLowerCase();
+
+    // Use localeCompare for case-insensitive alphabetical sorting
+    return teamNameA.localeCompare(teamNameB);
+  });
+
   useEffect(() => {
     // getAllDrivers();
     // getConstructors();
@@ -283,7 +293,17 @@ const MyDriversForm = () => {
             //   "input-error"
             // }`}
             styles={customStyles(isSaveClicked, formData, "driver1")}
-            options={optionsDrivers}
+            options={optionsDrivers.filter(
+              (driver) =>
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver2.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver3.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver4.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver5.split("/")[1]?.trim().toLowerCase()
+            )}
             value={selectedOptions.driver1}
             onChange={(selectedOption) =>
               handleOptionChange(selectedOption, "driver1")
@@ -307,7 +327,17 @@ const MyDriversForm = () => {
             //   "input-error"
             // }`}
             styles={customStyles(isSaveClicked, formData, "driver2")}
-            options={optionsDrivers}
+            options={optionsDrivers.filter(
+              (driver) =>
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver1.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver3.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver4.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver5.split("/")[1]?.trim().toLowerCase()
+            )}
             value={selectedOptions.driver2}
             onChange={(selectedOption) =>
               handleOptionChange(selectedOption, "driver2")
@@ -331,7 +361,17 @@ const MyDriversForm = () => {
             //   "input-error"
             // }`}
             styles={customStyles(isSaveClicked, formData, "driver3")}
-            options={optionsDrivers}
+            options={optionsDrivers.filter(
+              (driver) =>
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver1.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver2.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver4.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver5.split("/")[1]?.trim().toLowerCase()
+            )}
             value={selectedOptions.driver3}
             onChange={(selectedOption) =>
               handleOptionChange(selectedOption, "driver3")
@@ -355,7 +395,17 @@ const MyDriversForm = () => {
             //   "input-error"
             // }`}
             styles={customStyles(isSaveClicked, formData, "driver4")}
-            options={optionsDrivers}
+            options={optionsDrivers.filter(
+              (driver) =>
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver1.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver2.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver3.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver5.split("/")[1]?.trim().toLowerCase()
+            )}
             value={selectedOptions.driver4}
             onChange={(selectedOption) =>
               handleOptionChange(selectedOption, "driver4")
@@ -379,7 +429,17 @@ const MyDriversForm = () => {
             //   "input-error"
             // }`}
             styles={customStyles(isSaveClicked, formData, "driver5")}
-            options={optionsDrivers}
+            options={optionsDrivers.filter(
+              (driver) =>
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver1.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver2.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver3.split("/")[1]?.trim().toLowerCase() &&
+                driver.label.split("/")[1]?.trim().toLowerCase() !==
+                  formData.driver4.split("/")[1]?.trim().toLowerCase()
+            )}
             value={selectedOptions.driver5}
             onChange={(selectedOption) =>
               handleOptionChange(selectedOption, "driver5")
@@ -403,8 +463,50 @@ const MyDriversForm = () => {
             //   "input-error"
             // }`}
             styles={customStyles(isSaveClicked, formData, "teamName")}
-            options={optionsTeam}
-            value={selectedOptions.team}
+            // options={optionsTeam}
+            options={optionsTeam.filter(
+              (team) =>
+                team.label.trim().toLowerCase() ===
+                  formData.driver1.split("/")[1]?.trim().toLowerCase() ||
+                team.label.trim().toLowerCase() ===
+                  formData.driver2.split("/")[1]?.trim().toLowerCase() ||
+                team.label.trim().toLowerCase() ===
+                  formData.driver3.split("/")[1]?.trim().toLowerCase() ||
+                team.label.trim().toLowerCase() ===
+                  formData.driver4.split("/")[1]?.trim().toLowerCase() ||
+                team.label.trim().toLowerCase() ===
+                  formData.driver5.split("/")[1]?.trim().toLowerCase()
+            )}
+            // value={selectedOptions.team}
+            value={
+              selectedOptions.team?.label.trim().toLowerCase() ===
+                selectedOptions.driver1?.label
+                  .split("/")[1]
+                  ?.trim()
+                  .toLowerCase() ||
+              selectedOptions.team?.label.trim().toLowerCase() ===
+                selectedOptions.driver2?.label
+                  .split("/")[1]
+                  ?.trim()
+                  .toLowerCase() ||
+              selectedOptions.team?.label.trim().toLowerCase() ===
+                selectedOptions.driver3?.label
+                  .split("/")[1]
+                  ?.trim()
+                  .toLowerCase() ||
+              selectedOptions.team?.label.trim().toLowerCase() ===
+                selectedOptions.driver4?.label
+                  .split("/")[1]
+                  ?.trim()
+                  .toLowerCase() ||
+              selectedOptions.team?.label.trim().toLowerCase() ===
+                selectedOptions.driver5?.label
+                  .split("/")[1]
+                  ?.trim()
+                  .toLowerCase()
+                ? selectedOptions.team
+                : ""
+            }
             onChange={(selectedOption) =>
               handleOptionChange(selectedOption, "team")
             }

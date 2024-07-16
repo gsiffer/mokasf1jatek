@@ -349,8 +349,8 @@
 
 //******************************************************************************************************************
 
-import React, { useState } from "react";
-import styled from "styled-components";
+// import React, { useState } from "react";
+// import styled from "styled-components";
 // import {
 //   SortableContainer,
 //   SortableElement,
@@ -358,71 +358,130 @@ import styled from "styled-components";
 // } from "react-sortable-hoc";
 // import Sortable from "../../components/Sortable";
 
-const Wrapper = styled.section`
-  .team-container ul {
-    list-style-type: none;
-    padding: 0;
-  }
+// const Wrapper = styled.section`
+//   .team-container ul {
+//     list-style-type: none;
+//     padding: 0;
+//   }
 
-  .team-container ul li {
-    position: relative;
-    padding: 10px;
-    margin: 5px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: grab;
-    transition: transform 0.3s ease, background-color 0.3s ease,
-      box-shadow 0.5s ease;
-    z-index: 1;
-    min-width: 200px;
+//   .team-container ul li {
+//     position: relative;
+//     padding: 10px;
+//     margin: 5px;
+//     background-color: #f9f9f9;
+//     border: 1px solid #ddd;
+//     border-radius: 4px;
+//     cursor: grab;
+//     transition: transform 0.3s ease, background-color 0.3s ease,
+//       box-shadow 0.5s ease;
+//     z-index: 1;
+//     min-width: 200px;
 
-    &:hover {
-      background-color: #e9e9e9;
-    }
-  }
-`;
+//     &:hover {
+//       background-color: #e9e9e9;
+//     }
+//   }
+// `;
 
-// const SortableItem = SortableElement(({ value }) => <li>{value.content}</li>);
-
-// const SortableList = SortableContainer(({ items }) => {
+// const TeamStandings = () => {
+//   const [items, setItems] = useState([
+//     { id: "1", content: "Item 1" },
+//     { id: "2", content: "Item 2" },
+//     { id: "3", content: "Item 3" },
+//     { id: "4", content: "Item 4" },
+//     { id: "5", content: "Item 5" },
+//     { id: "6", content: "Item 6" },
+//     { id: "7", content: "Item 7" },
+//     { id: "8", content: "Item 8" },
+//     { id: "9", content: "Item 9" },
+//     { id: "10", content: "Item 10" },
+//     { id: "11", content: "Item 11" },
+//     { id: "12", content: "Item 12" },
+//   ]);
+//   const onSortEnd = ({ oldIndex, newIndex }) => {
+//     setItems(arrayMove(items, oldIndex, newIndex));
+//   };
 //   return (
-//     <ul>
-//       {items.map((value, index) => (
-//         <SortableItem key={`item-${value.id}`} index={index} value={value} />
-//       ))}
-//     </ul>
+//     <Wrapper>
+//       <div className="team-container">
+//         <Sortable items={items} onSortEnd={onSortEnd} />
+//         <div>{JSON.stringify(items, null, 2)}</div>
+//       </div>
+//     </Wrapper>
 //   );
-// });
+// };
 
-//************************************************************************************************************************
+// export default TeamStandings;
+
+// ****************************************************************************************************
+
+import React, { useState } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import Wrapper from "../../assets/wrappers/TeamOrders";
 
 const TeamStandings = () => {
-  // const [items, setItems] = useState([
-  //   { id: "1", content: "Item 1" },
-  //   { id: "2", content: "Item 2" },
-  //   { id: "3", content: "Item 3" },
-  //   { id: "4", content: "Item 4" },
-  //   { id: "5", content: "Item 5" },
-  //   { id: "6", content: "Item 6" },
-  //   { id: "7", content: "Item 7" },
-  //   { id: "8", content: "Item 8" },
-  //   { id: "9", content: "Item 9" },
-  //   { id: "10", content: "Item 10" },
-  //   { id: "11", content: "Item 11" },
-  //   { id: "12", content: "Item 12" },
-  // ]);
-  // const onSortEnd = ({ oldIndex, newIndex }) => {
-  //   setItems(arrayMove(items, oldIndex, newIndex));
-  // };
-  // return (
-  //   <Wrapper>
-  //     <div className="team-container">
-  //       <Sortable items={items} onSortEnd={onSortEnd} />
-  //       <div>{JSON.stringify(items, null, 2)}</div>
-  //     </div>
-  //   </Wrapper>
-  // );
+  const [items, setItems] = useState([
+    { id: "1", content: "Item 1" },
+    { id: "2", content: "Item 2" },
+    { id: "3", content: "Item 3" },
+    { id: "4", content: "Item 4" },
+  ]);
+
+  const moveItem = (dragIndex, hoverIndex) => {
+    const draggedItem = items[dragIndex];
+    const updatedItems = [...items];
+    updatedItems.splice(dragIndex, 1);
+    updatedItems.splice(hoverIndex, 0, draggedItem);
+    setItems(updatedItems);
+  };
+
+  const Item = ({ id, content, index }) => {
+    const [{ isDragging }, drag] = useDrag({
+      type: "item",
+      item: { id, index },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    });
+
+    const [, drop] = useDrop({
+      accept: "item",
+      hover: (item) => {
+        if (item.index !== index) {
+          moveItem(item.index, index);
+          item.index = index;
+        }
+      },
+    });
+
+    return (
+      <li
+        ref={(node) => drag(drop(node))}
+        style={{ opacity: isDragging ? 0.5 : 1 }}
+        className={isDragging ? "dragged" : ""}
+      >
+        {content}
+      </li>
+    );
+  };
+
+  return (
+    <Wrapper dragged={false}>
+      <div className="team-container">
+        <ul>
+          {items.map((item, index) => (
+            <Item
+              key={item.id}
+              id={item.id}
+              content={item.content}
+              index={index}
+            />
+          ))}
+        </ul>
+        <div>{JSON.stringify(items, null, 2)}</div>
+      </div>
+    </Wrapper>
+  );
 };
 
 export default TeamStandings;

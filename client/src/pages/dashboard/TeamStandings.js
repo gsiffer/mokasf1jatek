@@ -415,72 +415,132 @@
 
 // ****************************************************************************************************
 
+// import React, { useState } from "react";
+// import { useDrag, useDrop } from "react-dnd";
+// import Wrapper from "../../assets/wrappers/TeamOrders";
+
+// const TeamStandings = () => {
+//   const [items, setItems] = useState([
+//     { id: "1", content: "Item 1" },
+//     { id: "2", content: "Item 2" },
+//     { id: "3", content: "Item 3" },
+//     { id: "4", content: "Item 4" },
+//   ]);
+
+//   const moveItem = (dragIndex, hoverIndex) => {
+//     const draggedItem = items[dragIndex];
+//     const updatedItems = [...items];
+//     updatedItems.splice(dragIndex, 1);
+//     updatedItems.splice(hoverIndex, 0, draggedItem);
+//     setItems(updatedItems);
+//   };
+
+//   const Item = ({ id, content, index }) => {
+//     const [{ isDragging }, drag] = useDrag({
+//       type: "item",
+//       item: { id, index },
+//       collect: (monitor) => ({
+//         isDragging: monitor.isDragging(),
+//       }),
+//     });
+
+//     const [, drop] = useDrop({
+//       accept: "item",
+//       hover: (item) => {
+//         if (item.index !== index) {
+//           moveItem(item.index, index);
+//           item.index = index;
+//         }
+//       },
+//     });
+
+//     return (
+//       <li
+//         ref={(node) => drag(drop(node))}
+//         style={{ opacity: isDragging ? 0.5 : 1 }}
+//         className={isDragging ? "dragged" : ""}
+//       >
+//         {content}
+//       </li>
+//     );
+//   };
+
+//   return (
+//     <Wrapper dragged={false}>
+//       <div className="team-container">
+//         <ul>
+//           {items.map((item, index) => (
+//             <Item
+//               key={item.id}
+//               id={item.id}
+//               content={item.content}
+//               index={index}
+//             />
+//           ))}
+//         </ul>
+//         <div>{JSON.stringify(items, null, 2)}</div>
+//       </div>
+//     </Wrapper>
+//   );
+// };
+
+// export default TeamStandings;
+
+// ***********************************************************************************************************
+
 import React, { useState } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import Wrapper from "../../assets/wrappers/TeamOrders";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { TeamContainer, TeamItem } from "../../assets/wrappers/TeamOrders";
+
+const initialItems = [
+  { id: "1", content: "Item 1" },
+  { id: "2", content: "Item 2" },
+  { id: "3", content: "Item 3" },
+  { id: "4", content: "Item 4" },
+];
 
 const TeamStandings = () => {
-  const [items, setItems] = useState([
-    { id: "1", content: "Item 1" },
-    { id: "2", content: "Item 2" },
-    { id: "3", content: "Item 3" },
-    { id: "4", content: "Item 4" },
-  ]);
+  const [items, setItems] = useState(initialItems);
 
-  const moveItem = (dragIndex, hoverIndex) => {
-    const draggedItem = items[dragIndex];
-    const updatedItems = [...items];
-    updatedItems.splice(dragIndex, 1);
-    updatedItems.splice(hoverIndex, 0, draggedItem);
+  const onDragEnd = (result) => {
+    if (!result.destination) return; // If dropped outside the list
+    const { source, destination } = result;
+    if (source.index === destination.index) return;
+
+    const updatedItems = Array.from(items);
+    const [movedItem] = updatedItems.splice(source.index, 1);
+    updatedItems.splice(destination.index, 0, movedItem);
+
     setItems(updatedItems);
   };
 
-  const Item = ({ id, content, index }) => {
-    const [{ isDragging }, drag] = useDrag({
-      type: "item",
-      item: { id, index },
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-    });
-
-    const [, drop] = useDrop({
-      accept: "item",
-      hover: (item) => {
-        if (item.index !== index) {
-          moveItem(item.index, index);
-          item.index = index;
-        }
-      },
-    });
-
-    return (
-      <li
-        ref={(node) => drag(drop(node))}
-        style={{ opacity: isDragging ? 0.5 : 1 }}
-        className={isDragging ? "dragged" : ""}
-      >
-        {content}
-      </li>
-    );
-  };
-
   return (
-    <Wrapper dragged={false}>
-      <div className="team-container">
-        <ul>
-          {items.map((item, index) => (
-            <Item
-              key={item.id}
-              id={item.id}
-              content={item.content}
-              index={index}
-            />
-          ))}
-        </ul>
-        <div>{JSON.stringify(items, null, 2)}</div>
-      </div>
-    </Wrapper>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="items">
+        {(provided) => (
+          <TeamContainer
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            className="team-container"
+          >
+            {items.map((item, index) => (
+              <Draggable key={item.id} draggableId={item.id} index={index}>
+                {(provided) => (
+                  <TeamItem
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                  >
+                    {item.content}
+                  </TeamItem>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </TeamContainer>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 

@@ -1,4 +1,0 @@
-PORT=5000
-MONGO_URI=mongodb+srv://gaborsiffer:AAAAssss01*@cluster0.b9k40re.mongodb.net/MOKAS-F1-JATEK?retryWrites=true&w=majority
-JWT_SECRET=eShVkYp3s6v9y$B&E)H@McQfTjWnZq4t
-JWT_LIFETIME=1d

@@ -9,6 +9,7 @@ import {
   Constructors,
   Drivers,
   Excel,
+  TeamStandings,
 } from "./pages/dashboard";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="constructors" element={<Constructors />} />
           <Route path="drivers" element={<Drivers />} />
           <Route path="excel" element={<Excel />} />
+          <Route path="team-standings" element={<TeamStandings />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/landing" element={<Landing />} />

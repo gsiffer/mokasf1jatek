@@ -3,3 +3,4 @@
 .env
 /client/build
 /client/src/assets/images/main-backup.svg
+/client/src/pages/dashboard/Test.js

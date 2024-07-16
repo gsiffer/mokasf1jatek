@@ -1,12 +1,10 @@
 import Wrapper from "../../assets/wrappers/MyDrivers";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "../../context/appContext";
 import moment from "moment";
 import "moment-timezone";
 import Loading from "../../components/Loading";
 import Alert from "../../components/Alert";
-import EditIcon from "../../components/icons/EditIcon";
-import DeleteIcon from "../../components/icons/DeleteIcon";
 import capitalizeFirstLetters from "../../utils/capitalizeFirstLetters";
 
 const CET_TIME_ZONE = "Europe/Paris";

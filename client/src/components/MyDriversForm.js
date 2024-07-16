@@ -482,27 +482,27 @@ const MyDriversForm = () => {
               selectedOptions.team?.label.trim().toLowerCase() ===
                 selectedOptions.driver1?.label
                   .split("/")[1]
-                  ?.trim()
+                  .trim()
                   .toLowerCase() ||
               selectedOptions.team?.label.trim().toLowerCase() ===
                 selectedOptions.driver2?.label
                   .split("/")[1]
-                  ?.trim()
+                  .trim()
                   .toLowerCase() ||
               selectedOptions.team?.label.trim().toLowerCase() ===
                 selectedOptions.driver3?.label
                   .split("/")[1]
-                  ?.trim()
+                  .trim()
                   .toLowerCase() ||
               selectedOptions.team?.label.trim().toLowerCase() ===
                 selectedOptions.driver4?.label
                   .split("/")[1]
-                  ?.trim()
+                  .trim()
                   .toLowerCase() ||
               selectedOptions.team?.label.trim().toLowerCase() ===
                 selectedOptions.driver5?.label
                   .split("/")[1]
-                  ?.trim()
+                  .trim()
                   .toLowerCase()
                 ? selectedOptions.team
                 : ""

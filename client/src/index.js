@@ -1,4 +1,4 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import "normalize.css";
 import "./index.css";
@@ -7,9 +7,9 @@ import { AppProvider } from "./context/appContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <AppProvider>
       <App />
     </AppProvider>
-  </React.StrictMode>
+  </StrictMode>
 );

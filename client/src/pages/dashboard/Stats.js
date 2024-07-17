@@ -63,6 +63,12 @@ const Stats = () => {
   //     </Droppable>
   //   </DragDropContext>
   // );
+
+  return (
+    <table>
+      <th>valami</th>
+    </table>
+  );
 };
 
 export default Stats;

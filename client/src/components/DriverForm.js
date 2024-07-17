@@ -189,7 +189,7 @@ const DriverForm = () => {
             name="firstName"
             type="text"
             maxLength="30"
-            value={formData.firstName}
+            value={capitalizeFirstLetters(formData.firstName)}
             onChange={handleInputChange}
           ></input>
         </div>
@@ -212,7 +212,7 @@ const DriverForm = () => {
             name="lastName"
             type="text"
             maxLength="30"
-            value={formData.lastName}
+            value={capitalizeFirstLetters(formData.lastName)}
             onChange={handleInputChange}
           ></input>
         </div>

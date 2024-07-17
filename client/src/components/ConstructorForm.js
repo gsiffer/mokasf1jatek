@@ -4,6 +4,7 @@ import { useAppContext } from "../context/appContext";
 import { useEffect, useState, useRef } from "react";
 import Alert from "./Alert";
 import ErrorMessage from "./ErrorMessage";
+import capitalizeFirstLetters from "../utils/capitalizeFirstLetters";
 
 const ConstructorForm = () => {
   const [constructorName, setConstructorName] = useState("");
@@ -108,7 +109,7 @@ const ConstructorForm = () => {
             }`}
             type="text"
             maxLength="30"
-            value={constructorName}
+            value={capitalizeFirstLetters(constructorName)}
             onChange={handleConstructorNameChange}
           ></input>
         </div>

@@ -19,6 +19,7 @@ const MyDrivers = () => {
     "Driver 5",
     "Team",
   ];
+  const TEAM_COLUMNS = ["P", "Team"];
 
   const {
     locationCloseDate,
@@ -174,49 +175,80 @@ const MyDrivers = () => {
           >
             {myDrivers ? "Edit Bet" : "New Bet"}
           </button>
-          {/* )} */}
         </div>
 
-        <table className="vertical-table">
-          <thead>
-            <tr className="vertical-columns">
-              {COLUMNS.map((column, index) => (
-                <th key={index}>{column}</th>
-              ))}
-            </tr>
-          </thead>
+        <div className="flex-box">
+          <div className="my-drivers-table">
+            <table className="vertical-table">
+              <thead>
+                <tr className="vertical-columns">
+                  {COLUMNS.map((column, index) => (
+                    <th key={index}>{column}</th>
+                  ))}
+                </tr>
+              </thead>
 
-          <tbody>
-            <tr className="vertical-columns">
-              <td className="line" data-heading={COLUMNS[0]}>
-                {myDrivers ? capitalizeFirstLetters(myDrivers.driver1) : "N/A"}
-              </td>
-              <td className="line" data-heading={COLUMNS[1]}>
-                {myDrivers ? capitalizeFirstLetters(myDrivers.driver2) : "N/A"}
-              </td>
-              <td className="line" data-heading={COLUMNS[2]}>
-                {myDrivers ? capitalizeFirstLetters(myDrivers.driver3) : "N/A"}
-              </td>
-              <td className="line" data-heading={COLUMNS[3]}>
-                {myDrivers ? capitalizeFirstLetters(myDrivers.driver4) : "N/A"}
-              </td>
-              <td className="line" data-heading={COLUMNS[4]}>
-                {myDrivers ? capitalizeFirstLetters(myDrivers.driver5) : "N/A"}
-              </td>
-              <td className="line" data-heading={COLUMNS[5]}>
-                {myDrivers ? capitalizeFirstLetters(myDrivers.teamName) : "N/A"}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <tbody>
+                <tr className="vertical-columns">
+                  <td className="line" data-heading={COLUMNS[0]}>
+                    {myDrivers
+                      ? capitalizeFirstLetters(myDrivers.driver1)
+                      : "N/A"}
+                  </td>
+                  <td className="line" data-heading={COLUMNS[1]}>
+                    {myDrivers
+                      ? capitalizeFirstLetters(myDrivers.driver2)
+                      : "N/A"}
+                  </td>
+                  <td className="line" data-heading={COLUMNS[2]}>
+                    {myDrivers
+                      ? capitalizeFirstLetters(myDrivers.driver3)
+                      : "N/A"}
+                  </td>
+                  <td className="line" data-heading={COLUMNS[3]}>
+                    {myDrivers
+                      ? capitalizeFirstLetters(myDrivers.driver4)
+                      : "N/A"}
+                  </td>
+                  <td className="line" data-heading={COLUMNS[4]}>
+                    {myDrivers
+                      ? capitalizeFirstLetters(myDrivers.driver5)
+                      : "N/A"}
+                  </td>
+                  <td className="line" data-heading={COLUMNS[5]}>
+                    {myDrivers
+                      ? capitalizeFirstLetters(myDrivers.teamName)
+                      : "N/A"}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="team-table">
+            <table>
+              <thead>
+                <tr>
+                  {TEAM_COLUMNS.map((column, index) => (
+                    <th key={index}>{column}</th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>25</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Alpine F1 Team</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>25</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Alpine F1 Team</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-      {/* {numOfDriversPages > 1 && (
-        <PageBtnContainer
-          numOfPages={numOfDriversPages}
-          page={pageDriver}
-          type="drivers"
-        />
-      )} */}
     </Wrapper>
   );
 };

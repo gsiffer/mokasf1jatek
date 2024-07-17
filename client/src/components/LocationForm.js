@@ -9,6 +9,7 @@ import ErrorMessage from "./ErrorMessage";
 import moment from "moment";
 import "moment-timezone";
 import Alert from "./Alert";
+import capitalizeFirstLetters from "../utils/capitalizeFirstLetters";
 
 const CET_TIME_ZONE = "Europe/Paris";
 
@@ -186,7 +187,7 @@ const LocationForm = () => {
             }`}
             type="text"
             maxLength="30"
-            value={formData.locationName}
+            value={capitalizeFirstLetters(formData.locationName)}
             onChange={handleLocationNameChange}
           ></input>
         </div>

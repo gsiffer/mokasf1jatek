@@ -238,11 +238,43 @@ const MyDrivers = () => {
               <tbody>
                 <tr>
                   <td data-heading={TEAM_COLUMNS[0]}>25</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Red Bull</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>18</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Ferrari</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>15</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>McLaren</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>12</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Mercedes</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>10</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Aston Martin</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>8</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>RB F1 Team</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>6</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Haas F1 Team</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>4</td>
                   <td data-heading={TEAM_COLUMNS[1]}>Alpine F1 Team</td>
                 </tr>
                 <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>25</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Alpine F1 Team</td>
+                  <td data-heading={TEAM_COLUMNS[0]}>2</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Williams</td>
+                </tr>
+                <tr>
+                  <td data-heading={TEAM_COLUMNS[0]}>1</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Kick Sauber</td>
                 </tr>
               </tbody>
             </table>

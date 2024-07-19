@@ -25,18 +25,18 @@ const Wrapper = styled.section`
 
   .flex-box {
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between;
   }
 
   .my-drivers-table {
-    width: 70%;
+    width: 68%;
   }
 
   .team-table {
     width: 30%;
   }
 
-  .my-drivers-table,
+  .my-drivers-table table,
   .team-table table {
     width: 100%;
     background: #fff;
@@ -53,12 +53,19 @@ const Wrapper = styled.section`
 
   .team-table table th {
     text-align: center;
-    /* padding: 16px 32px; */
   }
 
-  .team-table table td {
+  .team-table table th:nth-of-type(1) {
+    border-right: 1px solid white;
+  }
+
+  .team-table table td:nth-of-type(1) {
     text-align: center;
-    /* padding: 10px 32px; */
+  }
+
+  .team-table table td:nth-of-type(2) {
+    text-align: left;
+    padding: 5px 10px;
   }
 
   .team-table table tr:nth-child(even) {
@@ -67,20 +74,13 @@ const Wrapper = styled.section`
 
   .my-drivers-table tbody {
     width: 75%;
-    /* border-style: solid;
-    border-width: 1px; */
   }
 
   .my-drivers-table thead {
     width: 25%;
-    /* border-style: solid;
-    border-width: 1px; */
   }
 
   .my-drivers-table table.vertical-table {
-    /* width: 100%; */
-    /* max-width: 550px; */
-    /* width: 800px; */
     display: flex;
   }
 
@@ -96,17 +96,21 @@ const Wrapper = styled.section`
 
   .my-drivers-table table th {
     text-align: center;
-    padding: 16px 32px;
+    padding: 10px 10px;
+  }
+
+  .my-drivers-table table th:nth-of-type(-n + 5) {
+    border-bottom: 1px solid white;
   }
 
   .my-drivers-table table td {
     text-align: left;
-    padding: 10px 32px;
+    padding: 10px 20px;
   }
 
-  .my-drivers-table table td.line {
+  /* .my-drivers-table table td.line {
     padding: 16px 32px;
-  }
+  } */
 
   .my-drivers-table table tbody td:nth-child(odd) {
     background-color: #f5f5f5;
@@ -157,6 +161,14 @@ const Wrapper = styled.section`
   }
 
   @media (max-width: 580px) {
+    .flex-box {
+      display: block;
+    }
+
+    .team-table {
+      width: 100%;
+    }
+
     .my-drivers-table table thead {
       display: none;
     }
@@ -174,6 +186,7 @@ const Wrapper = styled.section`
       content: none;
     }
 
+    .my-drivers-table,
     .my-drivers-table tbody {
       width: 100%;
     }
@@ -189,6 +202,10 @@ const Wrapper = styled.section`
     .my-drivers-table table th {
       text-align: left;
       padding: 10px;
+    }
+
+    .my-drivers-table table tr {
+      width: full;
     }
 
     .my-drivers-table table tr,
@@ -224,6 +241,10 @@ const Wrapper = styled.section`
     .remaining-time {
       flex-direction: column;
       text-align: center;
+    }
+
+    .table-menu {
+      justify-content: end;
     }
   }
 `;

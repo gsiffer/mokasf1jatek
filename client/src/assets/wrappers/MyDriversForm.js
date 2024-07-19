@@ -75,7 +75,7 @@ const Wrapper = styled.section`
     }
 
     .form-header {
-      margin-bottom: 10px;
+      margin-bottom: 0px;
     }
 
     .btn-container {

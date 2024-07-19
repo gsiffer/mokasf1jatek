@@ -19,7 +19,7 @@ const MyDrivers = () => {
     "Driver 5",
     "Team",
   ];
-  const TEAM_COLUMNS = ["P", "Team"];
+  const TEAM_COLUMNS = ["Pts", "Team"];
 
   const {
     locationCloseDate,

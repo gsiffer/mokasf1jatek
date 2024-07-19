@@ -24,6 +24,7 @@ import myDriversRouter from "./routes/myDriversRoutes.js";
 import locationsRouter from "./routes/locationsRoutes.js";
 import constructorsRouter from "./routes/constructorsRoutes.js";
 import driversRouter from "./routes/driversRoutes.js";
+import teamStandingsRouter from "./routes/teamStandingsRoutes.js";
 
 // middleware
 import notFoundMiddleware from "./middleware/not-found.js";
@@ -61,6 +62,7 @@ app.use("/api/v1/mydrivers", authenticateUser, myDriversRouter);
 app.use("/api/v1/locations", authenticateUser, locationsRouter);
 app.use("/api/v1/constructors", authenticateUser, constructorsRouter);
 app.use("/api/v1/drivers", authenticateUser, driversRouter);
+app.use("/api/v1/team-standings", authenticateUser, teamStandingsRouter);
 
 app.get("*", function (request, response) {
   response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));

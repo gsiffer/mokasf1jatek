@@ -51,8 +51,8 @@ const DriverForm = () => {
       if (editedDriver) {
         setFormData({
           ...formData,
-          firstName: editedDriver.firstName,
-          lastName: editedDriver.lastName,
+          firstName: capitalizeFirstLetters(editedDriver.firstName),
+          lastName: capitalizeFirstLetters(editedDriver.lastName),
           teamName: editedDriver.teamName ? editedDriver.teamName._id : "",
         });
         setSelectedTeamOption(
@@ -189,7 +189,7 @@ const DriverForm = () => {
             name="firstName"
             type="text"
             maxLength="30"
-            value={capitalizeFirstLetters(formData.firstName)}
+            value={formData.firstName}
             onChange={handleInputChange}
           ></input>
         </div>
@@ -212,7 +212,7 @@ const DriverForm = () => {
             name="lastName"
             type="text"
             maxLength="30"
-            value={capitalizeFirstLetters(formData.lastName)}
+            value={formData.lastName}
             onChange={handleInputChange}
           ></input>
         </div>

@@ -30,7 +30,9 @@ const ConstructorForm = () => {
       );
 
       if (editedConstructor) {
-        setConstructorName(editedConstructor.constructorName);
+        setConstructorName(
+          capitalizeFirstLetters(editedConstructor.constructorName)
+        );
       }
     }
   }, []);
@@ -109,7 +111,7 @@ const ConstructorForm = () => {
             }`}
             type="text"
             maxLength="30"
-            value={capitalizeFirstLetters(constructorName)}
+            value={constructorName}
             onChange={handleConstructorNameChange}
           ></input>
         </div>

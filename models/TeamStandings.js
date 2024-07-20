@@ -42,4 +42,33 @@ const TeamStandingsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Pre-save middleware to update locationName to lowercase
+TeamStandingsSchema.pre("save", function () {
+  // Lowercase activeLocationName
+  this.activeLocationName = this.activeLocationName.toLowerCase();
+
+  // Lowercase locationName in items array
+  this.items.forEach((item) => {
+    item.locationName = item.locationName.toLowerCase();
+  });
+});
+
+// Middleware to lowercase locationName on findOneAndUpdate
+TeamStandingsSchema.pre("findOneAndUpdate", function () {
+  // Lowercase activeLocationName if it is being updated
+  if (this._update.activeLocationName) {
+    this._update.activeLocationName =
+      this._update.activeLocationName.toLowerCase();
+  }
+
+  // Lowercase locationName in items array if it is being updated
+  if (this._update.items) {
+    this._update.items.forEach((item) => {
+      if (item.locationName) {
+        item.locationName = item.locationName.toLowerCase();
+      }
+    });
+  }
+});
+
 export default mongoose.model("TeamStandings", TeamStandingsSchema);

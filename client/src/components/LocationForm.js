@@ -53,7 +53,7 @@ const LocationForm = () => {
       if (editedLocation) {
         setFormData({
           ...formData,
-          locationName: editedLocation.locationName,
+          locationName: capitalizeFirstLetters(editedLocation.locationName),
           locationCloseDate: moment.tz(
             editedLocation.locationCloseDate,
             CET_TIME_ZONE
@@ -187,7 +187,7 @@ const LocationForm = () => {
             }`}
             type="text"
             maxLength="30"
-            value={capitalizeFirstLetters(formData.locationName)}
+            value={formData.locationName}
             onChange={handleLocationNameChange}
           ></input>
         </div>

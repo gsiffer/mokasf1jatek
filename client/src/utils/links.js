@@ -3,7 +3,7 @@ import { ImProfile } from "react-icons/im";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdSportsScore } from "react-icons/md";
 import { GiMechanicGarage, GiFullMotorcycleHelmet } from "react-icons/gi";
-import { FaRegFileExcel } from "react-icons/fa";
+import { FaRegFileExcel, FaSortAmountDown } from "react-icons/fa";
 
 const links = [
   {
@@ -59,7 +59,7 @@ const links = [
     id: 8,
     text: "team standings",
     path: "team-standings",
-    icon: <FaRegFileExcel />,
+    icon: <FaSortAmountDown />,
     role: "admin",
   },
 ];

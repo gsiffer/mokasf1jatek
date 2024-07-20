@@ -34,4 +34,11 @@ LocationSchema.pre("save", function () {
   this.locationName = this.locationName.toLowerCase();
 });
 
+// Middleware to lowercase locationName on findOneAndUpdate
+LocationSchema.pre("findOneAndUpdate", function () {
+  if (this._update.locationName) {
+    this._update.locationName = this._update.locationName.toLowerCase();
+  }
+});
+
 export default mongoose.model("Location", LocationSchema);

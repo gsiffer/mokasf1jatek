@@ -242,11 +242,11 @@ const MyDrivers = () => {
                 </tr>
                 <tr>
                   <td data-heading={TEAM_COLUMNS[0]}>2</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Ferrari</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>McLaren</td>
                 </tr>
                 <tr>
                   <td data-heading={TEAM_COLUMNS[0]}>4</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>McLaren</td>
+                  <td data-heading={TEAM_COLUMNS[1]}>Ferrari</td>
                 </tr>
                 <tr>
                   <td data-heading={TEAM_COLUMNS[0]}>6</td>

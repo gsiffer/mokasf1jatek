@@ -50,7 +50,7 @@ const TeamStandings = () => {
   useEffect(() => {
     getMyDrivers();
     getTeamStandings();
-  }, [isSaved]);
+  }, []);
 
   useEffect(() => {
     if (teamStandings && teamStandings.items) {
@@ -74,8 +74,8 @@ const TeamStandings = () => {
       };
 
       setData(updatedData);
-      setIsSaved(true);
       createTeamStandings(updatedData);
+      setIsSaved(true);
     } else {
       const updatedData = {
         ...data,

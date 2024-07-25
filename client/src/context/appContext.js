@@ -697,7 +697,7 @@ const AppProvider = ({ children }) => {
         activeLocationId,
         items,
       });
-      // getTeamStandings();
+      getTeamStandings();
       dispatch({
         type: CREATE_TEAM_STANDINGS_SUCCESS,
       });

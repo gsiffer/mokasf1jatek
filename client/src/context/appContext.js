@@ -64,6 +64,12 @@ import {
   DELETE_DRIVER_ERROR,
   GET_TEAM_STANDINGS_BEGIN,
   GET_TEAM_STANDINGS_SUCCESS,
+  CREATE_TEAM_STANDINGS_BEGIN,
+  CREATE_TEAM_STANDINGS_SUCCESS,
+  CREATE_TEAM_STANDINGS_ERROR,
+  EDIT_TEAM_STANDINGS_BEGIN,
+  EDIT_TEAM_STANDINGS_SUCCESS,
+  EDIT_TEAM_STANDINGS_ERROR,
   GET_EXCEL_BEGIN,
   GET_EXCEL_SUCCESS,
 } from "./actions";
@@ -110,6 +116,7 @@ const initialState = {
   location: "",
   // Team Standings
   teamStandings: null,
+  isTeamStandingsSaved: false,
 };
 
 const AppContext = createContext();
@@ -661,17 +668,66 @@ const AppProvider = ({ children }) => {
     dispatch({ type: GET_TEAM_STANDINGS_BEGIN });
     try {
       const { data } = await authFetch.get("/team-standings"); // or authFetch(url) -> get is the default;
-      const { teamStandings } = data;
+      const { teamStandings, isSaved } = data;
 
       dispatch({
         type: GET_TEAM_STANDINGS_SUCCESS,
         payload: {
           teamStandings,
+          isSaved,
         },
       });
     } catch (error) {
       // console.log(error.response);
       logoutUser();
+    }
+    clearAlert();
+  };
+
+  const createTeamStandings = async (data) => {
+    dispatch({ type: CREATE_TEAM_STANDINGS_BEGIN });
+    try {
+      const { activeLocationName, activeLocationId, items } = data;
+
+      await authFetch.post("/team-standings", {
+        activeLocationName,
+        activeLocationId,
+        items,
+      });
+      // getTeamStandings();
+      dispatch({
+        type: CREATE_TEAM_STANDINGS_SUCCESS,
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: CREATE_TEAM_STANDINGS_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
+    }
+    clearAlert();
+  };
+
+  const editTeamStandings = async (data) => {
+    dispatch({ type: EDIT_TEAM_STANDINGS_BEGIN });
+    try {
+      const { id, activeLocationName, activeLocationId, items } = data;
+
+      await authFetch.patch(`/team-standings/${id}`, {
+        activeLocationName,
+        activeLocationId,
+        items,
+      });
+      // getLocations();
+      dispatch({
+        type: EDIT_TEAM_STANDINGS_SUCCESS,
+      });
+    } catch (error) {
+      if (error.response.status === 401) return;
+      dispatch({
+        type: EDIT_TEAM_STANDINGS_ERROR,
+        payload: { msg: error.response.data.msg },
+      });
     }
     clearAlert();
   };
@@ -739,6 +795,8 @@ const AppProvider = ({ children }) => {
         editDriver,
         deleteDriver,
         getTeamStandings,
+        createTeamStandings,
+        editTeamStandings,
         getExcel,
       }}
     >

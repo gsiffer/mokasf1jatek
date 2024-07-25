@@ -2,15 +2,19 @@ import { BadRequestError, NotFoundError } from "../errors/index.js";
 import { StatusCodes } from "http-status-codes";
 import TeamStandings from "../models/TeamStandings.js";
 import Constructor from "../models/Constructor.js";
+import Location from "../models/Location.js";
 
 const getTeamStandings = async (req, res) => {
-  let teamStandings = await TeamStandings.find({});
+  let teamStandings = null;
+  let isSaved = true;
+  const activeLocation = await Location.findOne({ isLocationActive: true });
+  const teamStandingsCount = await TeamStandings.find({});
 
-  if (teamStandings.length === 0) {
+  if (teamStandingsCount.length === 0) {
     teamStandings = await Constructor.find({});
 
     const items = teamStandings.map((standing) => ({
-      _id: standing._id,
+      locationId: standing._id,
       locationName: standing.constructorName,
     }));
 
@@ -18,16 +22,28 @@ const getTeamStandings = async (req, res) => {
       items: items,
     };
 
-    res.status(StatusCodes.OK).json({ teamStandings: result });
+    isSaved = false;
+
+    res.status(StatusCodes.OK).json({ teamStandings: result, isSaved });
   }
 
-  teamStandings = teamStandings[teamStandings.length - 1];
+  if (activeLocation) {
+    teamStandings = await TeamStandings.findOne({
+      activeLocationId: activeLocation._id,
+    });
 
-  res.status(StatusCodes.OK).json({ teamStandings });
+    if (!teamStandings) {
+      teamStandings = await TeamStandings.find({});
+      teamStandings = teamStandings[teamStandings.length - 1];
+      isSaved = false;
+    }
+  }
+
+  res.status(StatusCodes.OK).json({ teamStandings, isSaved });
 };
 
 const getTeamStandingByLocationId = async (req, res) => {
-  const { locationId } = req.body;
+  const { id: locationId } = req.params;
 
   if (!locationId) {
     throw new BadRequestError("Location ID is required");

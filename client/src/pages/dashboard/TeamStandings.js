@@ -8,6 +8,7 @@ import {
 import { useAppContext } from "../../context/appContext";
 import Loading from "../../components/Loading";
 import capitalizeFirstLetters from "../../utils/capitalizeFirstLetters";
+import Alert from "../../components/Alert";
 
 // const initialItems = [
 //   { id: "1", content: "Item 1" },
@@ -26,18 +27,30 @@ const TeamStandings = () => {
   const HEADER = "Team Standings";
   const [items, setItems] = useState([]);
   const [data, setData] = useState({
+    id: "",
     activeLocationName: "",
     activeLocationId: "",
     items: [],
   });
+  const [isSaved, setIsSaved] = useState(false);
 
-  const { getTeamStandings, teamStandings, getMyDrivers, location, isLoading } =
-    useAppContext();
+  const {
+    getTeamStandings,
+    teamStandings,
+    isTeamStandingsSaved,
+    createTeamStandings,
+    editTeamStandings,
+    getMyDrivers,
+    location,
+    isLoading,
+    showAlert,
+    isDisplayErrorOnForm,
+  } = useAppContext();
 
   useEffect(() => {
     getMyDrivers();
     getTeamStandings();
-  }, []);
+  }, [isSaved]);
 
   useEffect(() => {
     if (teamStandings && teamStandings.items) {
@@ -51,6 +64,42 @@ const TeamStandings = () => {
       }));
     }
   }, [teamStandings, location]);
+
+  const handleClickSave = (e) => {
+    e.preventDefault();
+    if (!isTeamStandingsSaved) {
+      const updatedData = {
+        ...data,
+        items: items,
+      };
+
+      setData(updatedData);
+      setIsSaved(true);
+      createTeamStandings(updatedData);
+    } else {
+      const updatedData = {
+        ...data,
+        id: teamStandings._id,
+        items: items,
+      };
+
+      setData(updatedData);
+      editTeamStandings(updatedData);
+    }
+
+    // setIsSaveClicked(true);
+
+    // if (formValidation()) {
+    //   if (slidingPanel.isNew) {
+    //     createLocation(formData);
+    //     setFormData(INITIAL_DATA);
+    //     setIsSaveClicked(false);
+    //     setSelectedOption(ACTIVE_DATA[1]);
+    //   } else {
+    //     editLocation(formData);
+    //   }
+    // }
+  };
 
   const onDragEnd = (result) => {
     if (!result.destination) return; // If dropped outside the list
@@ -71,6 +120,12 @@ const TeamStandings = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
+        {showAlert && isDisplayErrorOnForm && (
+          <div className="alert">
+            <Alert />
+          </div>
+        )}
+
         <h2 className="table-heading">{HEADER}</h2>
         <div className="table-menu">
           <h4>{location ? location.locationName : "No Active Location"}</h4>
@@ -78,14 +133,15 @@ const TeamStandings = () => {
             type="button"
             // disabled={new Date(locationCloseDate) < new Date() ? true : false}
             className="btn btn-height"
-            // onClick={() => }
+            onClick={handleClickSave}
           >
-            Submit
+            {isTeamStandingsSaved || isSaved ? "Edit" : "Save"}
           </button>
         </div>
-        {/* <div>{JSON.stringify(location)}</div>
-        <div>{JSON.stringify(data)}</div>
-        <div>{JSON.stringify(items)}</div> */}
+        {/* <div>{JSON.stringify(isTeamStandingsSaved)}</div> */}
+        {/* <div>{isSaved.toString()}</div> */}
+        {/* <div>{JSON.stringify(teamStandings)}</div> */}
+        {/* <div>{JSON.stringify(items)}</div> */}
       </Wrapper>
       <Droppable droppableId="items">
         {(provided) => (
@@ -95,7 +151,11 @@ const TeamStandings = () => {
             className="team-container"
           >
             {items.map((item, index) => (
-              <Draggable key={item._id} draggableId={item._id} index={index}>
+              <Draggable
+                key={item.locationId}
+                draggableId={item.locationId}
+                index={index}
+              >
                 {(provided) => (
                   <TeamItem
                     {...provided.draggableProps}

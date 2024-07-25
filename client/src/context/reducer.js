@@ -59,6 +59,12 @@ import {
   DELETE_DRIVER_ERROR,
   GET_TEAM_STANDINGS_BEGIN,
   GET_TEAM_STANDINGS_SUCCESS,
+  CREATE_TEAM_STANDINGS_BEGIN,
+  CREATE_TEAM_STANDINGS_SUCCESS,
+  CREATE_TEAM_STANDINGS_ERROR,
+  EDIT_TEAM_STANDINGS_BEGIN,
+  EDIT_TEAM_STANDINGS_SUCCESS,
+  EDIT_TEAM_STANDINGS_ERROR,
   GET_EXCEL_BEGIN,
   GET_EXCEL_SUCCESS,
 } from "./actions";
@@ -582,6 +588,55 @@ const reducer = (state, action) => {
       ...state,
       isLoading: false,
       teamStandings: action.payload.teamStandings,
+      isTeamStandingsSaved: action.payload.isSaved,
+    };
+  }
+
+  if (action.type === CREATE_TEAM_STANDINGS_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === CREATE_TEAM_STANDINGS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "New Team Standings Created!",
+      isDisplayErrorOnForm: true,
+    };
+  }
+  if (action.type === CREATE_TEAM_STANDINGS_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: true,
+    };
+  }
+
+  if (action.type === EDIT_TEAM_STANDINGS_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === EDIT_TEAM_STANDINGS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "success",
+      alertText: "Team Standings Updated!",
+      isDisplayErrorOnForm: true,
+    };
+  }
+  if (action.type === EDIT_TEAM_STANDINGS_ERROR) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: "danger",
+      alertText: action.payload.msg,
+      isDisplayErrorOnForm: true,
     };
   }
 

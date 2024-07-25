@@ -10,8 +10,8 @@ import authUserRole from "../middleware/authUserRole.js";
 
 router.route("/").post(authUserRole, createTeamStandings).get(getTeamStandings);
 router
-  .route("/findByLocationId")
-  .post(authUserRole, getTeamStandingByLocationId);
-router.route("/:id").patch(authUserRole, updateTeamStandings);
+  .route("/:id")
+  .patch(authUserRole, updateTeamStandings)
+  .get(getTeamStandingByLocationId);
 
 export default router;

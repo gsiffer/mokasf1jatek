@@ -62,6 +62,8 @@ import {
   EDIT_DRIVER_ERROR,
   DELETE_DRIVER_BEGIN,
   DELETE_DRIVER_ERROR,
+  GET_TEAM_STANDINGS_BEGIN,
+  GET_TEAM_STANDINGS_SUCCESS,
   GET_EXCEL_BEGIN,
   GET_EXCEL_SUCCESS,
 } from "./actions";
@@ -106,6 +108,8 @@ const initialState = {
   // My Drivers
   myDrivers: [],
   location: "",
+  // Team Standings
+  teamStandings: null,
 };
 
 const AppContext = createContext();
@@ -653,6 +657,25 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const getTeamStandings = async () => {
+    dispatch({ type: GET_TEAM_STANDINGS_BEGIN });
+    try {
+      const { data } = await authFetch.get("/team-standings"); // or authFetch(url) -> get is the default;
+      const { teamStandings } = data;
+
+      dispatch({
+        type: GET_TEAM_STANDINGS_SUCCESS,
+        payload: {
+          teamStandings,
+        },
+      });
+    } catch (error) {
+      // console.log(error.response);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
   const getExcel = async () => {
     dispatch({ type: GET_EXCEL_BEGIN });
     try {
@@ -715,6 +738,7 @@ const AppProvider = ({ children }) => {
         createDriver,
         editDriver,
         deleteDriver,
+        getTeamStandings,
         getExcel,
       }}
     >

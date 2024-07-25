@@ -1,9 +1,27 @@
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import { StatusCodes } from "http-status-codes";
 import TeamStandings from "../models/TeamStandings.js";
+import Constructor from "../models/Constructor.js";
 
 const getTeamStandings = async (req, res) => {
-  const teamStandings = await TeamStandings.find({});
+  let teamStandings = await TeamStandings.find({});
+
+  if (teamStandings.length === 0) {
+    teamStandings = await Constructor.find({});
+
+    const items = teamStandings.map((standing) => ({
+      _id: standing._id,
+      locationName: standing.constructorName,
+    }));
+
+    const result = {
+      items: items,
+    };
+
+    res.status(StatusCodes.OK).json({ teamStandings: result });
+  }
+
+  teamStandings = teamStandings[teamStandings.length - 1];
 
   res.status(StatusCodes.OK).json({ teamStandings });
 };

@@ -20,6 +20,7 @@ const MyDrivers = () => {
     "Team",
   ];
   const TEAM_COLUMNS = ["Pts", "Team"];
+  const POINTS = [1, 2, 5, 6, 8, 10, 12, 15, 18, 25];
 
   const {
     locationCloseDate,
@@ -86,7 +87,6 @@ const MyDrivers = () => {
     }
 
     return () => {
-      // console.log("LEAVE");
       clearInterval(timerId);
     };
   }, [locationCloseDate]);
@@ -97,7 +97,6 @@ const MyDrivers = () => {
     const timeDifference = moment(targetDate).diff(moment(timeNow));
 
     if (timeDifference < 0) {
-      // console.log("LEAVE");
       clearInterval(timerId);
       setRemainingTime({
         ...remainingTime,
@@ -168,19 +167,8 @@ const MyDrivers = () => {
         )}
 
         <h4>{location ? location.locationName : "No Race"}</h4>
-        <div>{JSON.stringify(activeTeamStandings)}</div>
+
         <div className="table-menu">
-          {/* <div className="page-count-header">
-            <h5>
-              {totalDrivers} driver{drivers.length > 1 && "s"} found
-            </h5>
-
-            <h5 className="page-count">
-              page {pageDriver} of {numOfDriversPages}
-            </h5>
-          </div> */}
-
-          {/* {remainingTime.days != null && ( */}
           <button
             type="button"
             disabled={new Date(locationCloseDate) < new Date() ? true : false}
@@ -259,46 +247,16 @@ const MyDrivers = () => {
               </thead>
 
               <tbody>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>1</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Red Bull</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>2</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>McLaren</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>4</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Ferrari</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>6</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Mercedes</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>8</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Aston Martin</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>10</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>RB F1 Team</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>12</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Haas F1 Team</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>15</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Alpine F1 Team</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>18</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Williams</td>
-                </tr>
-                <tr>
-                  <td data-heading={TEAM_COLUMNS[0]}>25</td>
-                  <td data-heading={TEAM_COLUMNS[1]}>Kick Sauber</td>
-                </tr>
+                {activeTeamStandings?.items?.map((item, index) => (
+                  <tr key={item.locationId}>
+                    <td data-heading={COLUMNS[0]}>
+                      {POINTS[index] !== undefined ? POINTS[index] : "N/A"}
+                    </td>
+                    <td data-heading={COLUMNS[1]}>
+                      {capitalizeFirstLetters(item.locationName)}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

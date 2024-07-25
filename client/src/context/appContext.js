@@ -70,6 +70,8 @@ import {
   EDIT_TEAM_STANDINGS_BEGIN,
   EDIT_TEAM_STANDINGS_SUCCESS,
   EDIT_TEAM_STANDINGS_ERROR,
+  GET_TEAM_STANDINGS_BY_ID_BEGIN,
+  GET_TEAM_STANDINGS_BY_ID_SUCCESS,
   GET_EXCEL_BEGIN,
   GET_EXCEL_SUCCESS,
 } from "./actions";
@@ -114,6 +116,7 @@ const initialState = {
   // My Drivers
   myDrivers: [],
   location: "",
+  activeTeamStandings: null,
   // Team Standings
   teamStandings: null,
   isTeamStandingsSaved: false,
@@ -732,6 +735,25 @@ const AppProvider = ({ children }) => {
     clearAlert();
   };
 
+  const getTeamStandingsByLocationId = async (id) => {
+    dispatch({ type: GET_TEAM_STANDINGS_BY_ID_BEGIN });
+    try {
+      const { data } = await authFetch.get(`/team-standings/${id}`);
+      const { teamStanding } = data;
+      console.log(data);
+      dispatch({
+        type: GET_TEAM_STANDINGS_BY_ID_SUCCESS,
+        payload: {
+          teamStanding,
+        },
+      });
+    } catch (error) {
+      // console.log(error.response);
+      logoutUser();
+    }
+    clearAlert();
+  };
+
   const getExcel = async () => {
     dispatch({ type: GET_EXCEL_BEGIN });
     try {
@@ -797,6 +819,7 @@ const AppProvider = ({ children }) => {
         getTeamStandings,
         createTeamStandings,
         editTeamStandings,
+        getTeamStandingsByLocationId,
         getExcel,
       }}
     >

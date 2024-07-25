@@ -65,6 +65,8 @@ import {
   EDIT_TEAM_STANDINGS_BEGIN,
   EDIT_TEAM_STANDINGS_SUCCESS,
   EDIT_TEAM_STANDINGS_ERROR,
+  GET_TEAM_STANDINGS_BY_ID_BEGIN,
+  GET_TEAM_STANDINGS_BY_ID_SUCCESS,
   GET_EXCEL_BEGIN,
   GET_EXCEL_SUCCESS,
 } from "./actions";
@@ -637,6 +639,17 @@ const reducer = (state, action) => {
       alertType: "danger",
       alertText: action.payload.msg,
       isDisplayErrorOnForm: true,
+    };
+  }
+
+  if (action.type === GET_TEAM_STANDINGS_BY_ID_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_TEAM_STANDINGS_BY_ID_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      activeTeamStandings: action.payload.teamStanding,
     };
   }
 

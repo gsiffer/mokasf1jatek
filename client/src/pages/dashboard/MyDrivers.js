@@ -33,6 +33,8 @@ const MyDrivers = () => {
     slidePanel,
     getAllDrivers,
     getConstructors,
+    getTeamStandingsByLocationId,
+    activeTeamStandings,
   } = useAppContext();
 
   const [remainingTime, setRemainingTime] = useState({
@@ -41,19 +43,40 @@ const MyDrivers = () => {
     minutes: null,
     seconds: null,
   });
+  const [localLoading, setLocalLoading] = useState(true);
 
   let targetDate = null;
   let timerId = null;
 
+  // useEffect(() => {
+  //   getAllDrivers();
+  //   getConstructors();
+  //   getMyDrivers();
+  //   return () => {
+  //     // console.log("LEAVE");
+  //     clearInterval(timerId);
+  //   };
+  // }, []);
+
   useEffect(() => {
-    getAllDrivers();
-    getConstructors();
-    getMyDrivers();
+    const fetchData = async () => {
+      setLocalLoading(true);
+      await Promise.all([getAllDrivers(), getConstructors(), getMyDrivers()]);
+      setLocalLoading(false);
+    };
+
+    fetchData();
+
     return () => {
-      // console.log("LEAVE");
       clearInterval(timerId);
     };
   }, []);
+
+  useEffect(() => {
+    if (location?._id) {
+      getTeamStandingsByLocationId(location._id);
+    }
+  }, [location]);
 
   useEffect(() => {
     if (locationCloseDate) {
@@ -114,7 +137,7 @@ const MyDrivers = () => {
   //   });
   // }, 1000);
 
-  if (isLoading) {
+  if (isLoading || localLoading) {
     return <Loading center />;
   }
 
@@ -145,7 +168,7 @@ const MyDrivers = () => {
         )}
 
         <h4>{location ? location.locationName : "No Race"}</h4>
-
+        <div>{JSON.stringify(activeTeamStandings)}</div>
         <div className="table-menu">
           {/* <div className="page-count-header">
             <h5>

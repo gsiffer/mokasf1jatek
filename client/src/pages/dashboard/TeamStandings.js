@@ -86,19 +86,6 @@ const TeamStandings = () => {
       setData(updatedData);
       editTeamStandings(updatedData);
     }
-
-    // setIsSaveClicked(true);
-
-    // if (formValidation()) {
-    //   if (slidingPanel.isNew) {
-    //     createLocation(formData);
-    //     setFormData(INITIAL_DATA);
-    //     setIsSaveClicked(false);
-    //     setSelectedOption(ACTIVE_DATA[1]);
-    //   } else {
-    //     editLocation(formData);
-    //   }
-    // }
   };
 
   const onDragEnd = (result) => {

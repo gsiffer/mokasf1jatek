@@ -20,7 +20,7 @@ const MyDrivers = () => {
     "Team",
   ];
   const TEAM_COLUMNS = ["Pts", "Team"];
-  const POINTS = [1, 2, 5, 6, 8, 10, 12, 15, 18, 25];
+  const POINTS = [1, 2, 4, 6, 8, 10, 12, 15, 18, 25];
 
   const {
     locationCloseDate,

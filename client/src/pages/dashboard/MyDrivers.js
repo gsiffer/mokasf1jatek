@@ -159,11 +159,20 @@ const MyDrivers = () => {
 
         {remainingTime.days != null && !isNaN(remainingTime.days) ? (
           <div className="remaining-time">
-            <h2>Remaining Time:&nbsp;</h2>
-            <h2>{`${remainingTime.days}d ${remainingTime.hours}h ${remainingTime.minutes}m ${remainingTime.seconds}s`}</h2>
+            <h2>Time to Race:&nbsp;</h2>
+            <h2>
+              {remainingTime.days}
+              <span>day </span>
+              {remainingTime.hours}
+              <span>hour </span>
+              {remainingTime.minutes}
+              <span>min </span>
+              {remainingTime.seconds}
+              <span>sec </span>
+            </h2>
           </div>
         ) : (
-          <h2>No More Bet</h2>
+          <h2 className="no-more-bet">No More Bet</h2>
         )}
 
         <h4>{location ? location.locationName : "No Race"}</h4>

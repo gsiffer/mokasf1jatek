@@ -31,6 +31,8 @@ const Wrapper = styled.aside`
       display: flex;
       flex-direction: column;
       /* overflow-y: auto; */
+      /* max-height: 800px; */
+      /* padding-right: 20px; */
     }
     .nav-link {
       display: flex;

@@ -5,6 +5,14 @@ const Wrapper = styled.section`
     margin: 0;
   }
 
+  h4 {
+    text-align: center;
+  }
+
+  span {
+    font-size: x-large;
+  }
+
   td button {
     all: unset;
     cursor: pointer;
@@ -158,9 +166,29 @@ const Wrapper = styled.section`
 
   .remaining-time {
     display: flex;
+    justify-content: center;
+    background-color: #006442;
+    color: white;
+    margin-bottom: 1.38rem;
+  }
+
+  .remaining-time h2 {
+    margin: auto 0;
+    padding: 10px;
+  }
+
+  .no-more-bet {
+    background-color: #b22222;
+    color: white;
+    padding: 10px;
+    text-align: center;
   }
 
   @media (max-width: 580px) {
+    span {
+      font-size: large;
+    }
+
     .flex-box {
       display: block;
     }

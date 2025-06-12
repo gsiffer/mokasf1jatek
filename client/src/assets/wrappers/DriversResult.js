@@ -1,10 +1,20 @@
 import styled from "styled-components";
 
+export const DragDropContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 580px) {
+    flex-direction: column;
+  }
+`;
+
 export const TeamContainer = styled.ul`
   list-style-type: none;
   padding: 0;
-  max-width: 800px;
-  margin: auto;
+  flex: 1;
+  max-width: 700px;
+  /* margin: auto; */
 `;
 
 export const TeamItem = styled.li`

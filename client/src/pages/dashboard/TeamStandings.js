@@ -25,6 +25,8 @@ import Alert from "../../components/Alert";
 
 const TeamStandings = () => {
   const HEADER = "Team Standings";
+  const POINTS = [1, 2, 4, 6, 8, 10, 12, 15, 18, 25];
+
   const [items, setItems] = useState([]);
   const [data, setData] = useState({
     id: "",
@@ -32,7 +34,8 @@ const TeamStandings = () => {
     activeLocationId: "",
     items: [],
   });
-  const [isSaved, setIsSaved] = useState(false);
+
+  const [isSaved, setIsSaved] = useState(true);
 
   const {
     getTeamStandings,
@@ -67,10 +70,18 @@ const TeamStandings = () => {
 
   const handleClickSave = (e) => {
     e.preventDefault();
+
+    // Create a new array with updated point values
+    // Update the point or leave it unchanged if no corresponding value in POINT
+    const updatedItems = items.map((item, index) => ({
+      ...item,
+      point: POINTS[index] !== undefined ? POINTS[index] : item.point,
+    }));
+
     if (!isTeamStandingsSaved) {
       const updatedData = {
         ...data,
-        items: items,
+        items: updatedItems,
       };
 
       setData(updatedData);
@@ -80,11 +91,12 @@ const TeamStandings = () => {
       const updatedData = {
         ...data,
         id: teamStandings._id,
-        items: items,
+        items: updatedItems,
       };
 
       setData(updatedData);
       editTeamStandings(updatedData);
+      setIsSaved(true);
     }
   };
 
@@ -98,6 +110,7 @@ const TeamStandings = () => {
     updatedItems.splice(destination.index, 0, movedItem);
 
     setItems(updatedItems);
+    setIsSaved(false);
   };
 
   if (isLoading) {
@@ -121,8 +134,9 @@ const TeamStandings = () => {
             // disabled={new Date(locationCloseDate) < new Date() ? true : false}
             className="btn btn-height"
             onClick={handleClickSave}
+            disabled={isSaved && isTeamStandingsSaved}
           >
-            {isTeamStandingsSaved || isSaved ? "Edit" : "Save"}
+            Save
           </button>
         </div>
         {/* <div>{JSON.stringify(isTeamStandingsSaved)}</div> */}
@@ -139,8 +153,8 @@ const TeamStandings = () => {
           >
             {items.map((item, index) => (
               <Draggable
-                key={item.locationId}
-                draggableId={item.locationId}
+                key={item.teamId}
+                draggableId={item.teamId}
                 index={index}
               >
                 {(provided) => (
@@ -149,7 +163,7 @@ const TeamStandings = () => {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                   >
-                    {capitalizeFirstLetters(item.locationName)}
+                    {capitalizeFirstLetters(item.teamName)}
                   </TeamItem>
                 )}
               </Draggable>

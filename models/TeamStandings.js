@@ -2,14 +2,18 @@ import mongoose from "mongoose";
 
 // Define the schema for an individual item
 const itemSchema = new mongoose.Schema({
-  locationId: {
+  teamId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Location",
-    required: [true, "Please provide location id"],
+    ref: "Constructor",
+    required: [true, "Please provide team id"],
   },
-  locationName: {
+  teamName: {
     type: String,
-    required: [true, "Please provide location name"],
+    required: [true, "Please provide team name"],
+  },
+  point: {
+    type: Number,
+    required: [true, "Please provide point value"],
   },
 });
 
@@ -49,7 +53,7 @@ TeamStandingsSchema.pre("save", function () {
 
   // Lowercase locationName in items array
   this.items.forEach((item) => {
-    item.locationName = item.locationName.toLowerCase();
+    item.teamName = item.teamName.toLowerCase();
   });
 });
 
@@ -64,8 +68,8 @@ TeamStandingsSchema.pre("findOneAndUpdate", function () {
   // Lowercase locationName in items array if it is being updated
   if (this._update.items) {
     this._update.items.forEach((item) => {
-      if (item.locationName) {
-        item.locationName = item.locationName.toLowerCase();
+      if (item.teamName) {
+        item.teamName = item.teamName.toLowerCase();
       }
     });
   }

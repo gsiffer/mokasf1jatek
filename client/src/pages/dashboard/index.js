@@ -7,6 +7,7 @@ import Constructors from "./Constructors";
 import Drivers from "./Drivers";
 import Excel from "./Excel";
 import TeamStandings from "./TeamStandings";
+import Results from "./Results";
 
 export {
   Profile,
@@ -18,4 +19,5 @@ export {
   Drivers,
   Excel,
   TeamStandings,
+  Results,
 };

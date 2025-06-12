@@ -14,8 +14,9 @@ const getTeamStandings = async (req, res) => {
     teamStandings = await Constructor.find({});
 
     const items = teamStandings.map((standing) => ({
-      locationId: standing._id,
-      locationName: standing.constructorName,
+      teamId: standing._id,
+      teamName: standing.constructorName,
+      point: 0,
     }));
 
     const result = {
@@ -57,6 +58,8 @@ const getTeamStandingByLocationId = async (req, res) => {
 };
 
 const createTeamStandings = async (req, res) => {
+  // const POINTS = [1, 2, 4, 6, 8, 10, 12, 15, 18, 25];
+
   const { activeLocationName, activeLocationId, items } = req.body;
 
   if (!activeLocationName || !activeLocationId || !items) {
@@ -80,6 +83,8 @@ const updateTeamStandings = async (req, res) => {
   const { id: teamStandingId } = req.params;
 
   const { activeLocationName, activeLocationId, items } = req.body;
+
+  console.log(req.body);
 
   if (!activeLocationName || !activeLocationId || !items) {
     throw new BadRequestError("Please provide all values");

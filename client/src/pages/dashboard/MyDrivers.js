@@ -20,7 +20,6 @@ const MyDrivers = () => {
     "Team",
   ];
   const TEAM_COLUMNS = ["Pts", "Team"];
-  const POINTS = [1, 2, 4, 6, 8, 10, 12, 15, 18, 25];
 
   const {
     locationCloseDate,
@@ -160,16 +159,25 @@ const MyDrivers = () => {
         {remainingTime.days != null && !isNaN(remainingTime.days) ? (
           <div className="remaining-time">
             <h2>Time to Race:&nbsp;</h2>
-            <h2>
-              {remainingTime.days}
-              <span>day </span>
-              {remainingTime.hours}
-              <span>hour </span>
-              {remainingTime.minutes}
-              <span>min </span>
-              {remainingTime.seconds}
-              <span>sec </span>
-            </h2>
+            <div className="time-screen">
+              <div className="day">{remainingTime.days}</div>
+              <div className="text">day</div>
+              <div className="number">
+                {remainingTime.hours < 10 && <span className="zero">0</span>}
+                {remainingTime.hours}
+              </div>
+              <div className="text">hour</div>
+              <div className="number">
+                {remainingTime.minutes < 10 && <span className="zero">0</span>}
+                {remainingTime.minutes}
+              </div>
+              <div className="text">min</div>
+              <div className="number">
+                {remainingTime.seconds < 10 && <span className="zero">0</span>}
+                {remainingTime.seconds}
+              </div>
+              <div className="text">sec</div>
+            </div>
           </div>
         ) : (
           <h2 className="no-more-bet">No More Bet</h2>
@@ -258,11 +266,9 @@ const MyDrivers = () => {
               <tbody>
                 {activeTeamStandings?.items?.map((item, index) => (
                   <tr key={item.locationId}>
-                    <td data-heading={COLUMNS[0]}>
-                      {POINTS[index] !== undefined ? POINTS[index] : "N/A"}
-                    </td>
+                    <td data-heading={COLUMNS[0]}>{item.point}</td>
                     <td data-heading={COLUMNS[1]}>
-                      {capitalizeFirstLetters(item.locationName)}
+                      {capitalizeFirstLetters(item.teamName)}
                     </td>
                   </tr>
                 ))}

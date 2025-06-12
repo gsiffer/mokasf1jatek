@@ -5,12 +5,44 @@ const Wrapper = styled.section`
     margin: 0;
   }
 
+  /* h2 {
+    margin: 0 0 0 0;
+  } */
+
   h4 {
     text-align: center;
   }
 
-  span {
+  /* span {
     font-size: x-large;
+  } */
+
+  .time-screen {
+    display: flex;
+    padding: 10px;
+    /* justify-content: space-around; */
+  }
+
+  .number {
+    min-width: 45px;
+    text-align: right;
+    font-size: 39px;
+    margin-right: 2px;
+    font-family: sans-serif;
+  }
+
+  .day {
+    text-align: right;
+    font-size: 39px;
+    margin-right: 2px;
+    font-family: sans-serif;
+  }
+
+  .text {
+    font-size: x-large;
+    margin-right: 2px;
+    color: yellow;
+    /* align-self: flex-end; */
   }
 
   td button {
@@ -173,8 +205,9 @@ const Wrapper = styled.section`
   }
 
   .remaining-time h2 {
-    margin: auto 0;
+    margin: 0;
     padding: 10px;
+    align-self: center;
   }
 
   .no-more-bet {
@@ -273,6 +306,23 @@ const Wrapper = styled.section`
 
     .table-menu {
       justify-content: end;
+    }
+
+    .time-screen {
+      margin: auto;
+    }
+
+    .number {
+      min-width: 40px;
+      font-size: 36px;
+    }
+
+    .day {
+      font-size: 36px;
+    }
+
+    .zero {
+      font-size: 36px;
     }
   }
 `;

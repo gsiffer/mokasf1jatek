@@ -4,6 +4,7 @@ import { IoLocationSharp } from "react-icons/io5";
 import { MdSportsScore } from "react-icons/md";
 import { GiMechanicGarage, GiFullMotorcycleHelmet } from "react-icons/gi";
 import { FaRegFileExcel, FaSortAmountDown } from "react-icons/fa";
+import { GiSteeringWheel } from "react-icons/gi";
 
 const links = [
   {
@@ -17,7 +18,7 @@ const links = [
     id: 2,
     text: "my drivers",
     path: "my-drivers",
-    icon: <MdSportsScore />,
+    icon: <GiSteeringWheel />,
     role: "user",
   },
   {
@@ -60,6 +61,13 @@ const links = [
     text: "team standings",
     path: "team-standings",
     icon: <FaSortAmountDown />,
+    role: "admin",
+  },
+  {
+    id: 9,
+    text: "results",
+    path: "results",
+    icon: <MdSportsScore />,
     role: "admin",
   },
 ];

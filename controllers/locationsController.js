@@ -20,7 +20,7 @@ const createLocation = async (req, res) => {
 };
 
 const getAllLocation = async (req, res) => {
-  let result = Location.find({});
+  let result = Location.find({}).sort({ locationCloseDate: 1 }); // ascending order;
 
   // setup pagination
   const page = Number(req.query.page) || 1;
